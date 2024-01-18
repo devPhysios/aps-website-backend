@@ -81,10 +81,6 @@ const StudentSchema = new mongoose.Schema({
         default: null,
         enum: ['100', '200', '300', '400', '500']  
     },
-    role: {
-        type: String,
-        default: 'student'
-    },
     post: {
         type: String,
         default: null
@@ -101,18 +97,6 @@ const StudentSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    isFreshman: {
-        type: Boolean,
-        default: false,
-    },
-    isFinalYear: {
-        type: Boolean,
-        default: false
-    },
-    isClinicalStudent: {
-        type: Boolean,
-        default: false
-    },
     hallOfResidence: {
         type: String,
         default: null
@@ -120,6 +104,14 @@ const StudentSchema = new mongoose.Schema({
     roomNo: {
         type: String,
         default: null
+    },
+    isAcademicCommittee: {
+        type: Boolean,
+        default: false
+    },
+    isSenator: {
+        type: Boolean,
+        default: false
     }
 })
 

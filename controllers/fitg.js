@@ -1,5 +1,5 @@
 const { FillInTheGapQuestion } = require('../models/Question');
-const StatusCodes = require('http-status-codes');
+const {StatusCodes} = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors')
 
 const createQuestion = async (req, res) => {
