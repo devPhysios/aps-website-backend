@@ -23,13 +23,20 @@ app.use(xss());
 //connect to db
 const connectDB = require("./db/connnect");
 
-// routers
+const authenticateStudent = require('./middleware/authentication'); //this is used for accessing protected routes like dashboard
 
+// routers
+const authRouter = require("./routes/auth");
 
 // error handler
+const notFound = require("./middleware/not-found");
+const errorHandlerMiddleware = require("./middleware/error-handler");
 
 // routes
+app.use('/api/v1/auth', authRouter);
 
+app.use(notFound);
+app.use(errorHandlerMiddleware);
 
 
 const port = process.env.PORT || 8800;
