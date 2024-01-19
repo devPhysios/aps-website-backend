@@ -18,7 +18,7 @@ const login = async (req, res) => {
   if (!student) {
     throw new UnauthenticatedError("Student not found");
   }
-  const isPasswordCorrect = await user.comparePassword(password);
+  const isPasswordCorrect = await student.comparePassword(password);
   if (!isPasswordCorrect) {
     throw new UnauthenticatedError("Invalid Password");
   }
