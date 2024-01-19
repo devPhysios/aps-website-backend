@@ -67,7 +67,9 @@ const StudentSchema = new mongoose.Schema({
         trim: true,
         unique: [true, 'Matric number already exists']
     },
-    program: 'Physiotherapy',
+    program: {
+        type: String,
+        default: 'Physiotherapy'},
     isAcademicCommittee: {
         type: Boolean,
         default: false

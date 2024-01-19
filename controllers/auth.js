@@ -1,6 +1,6 @@
 const Student = require("../models/Student");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors").default;
+const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 
 const register = async (req, res) => {
