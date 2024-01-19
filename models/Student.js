@@ -80,8 +80,8 @@ const StudentSchema = new mongoose.Schema({
     },
     level: {
         type: String,
-        default: null,
-        enum: ['100', '200', '300', '400', '500']  
+        enum: ['100', '200', '300', '400', '500'],
+        required: [true, 'Please enter your level']  
     },
     post: {
         type: String,
