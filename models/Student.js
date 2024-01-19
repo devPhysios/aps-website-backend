@@ -117,20 +117,21 @@ const StudentSchema = new mongoose.Schema({
     }
 })
 
-StudentSchema.pre("save", async function () {
+StudentSchema.pre("save", async function (next) {
     const salt = await bcrypt.genSalt(10);
-    this.password = bcrypt.hash(this.password, salt);
-  });
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
   
-  StudentSchema.methods.createJWT = function () {
+StudentSchema.methods.createJWT = function () {
     return jwt.sign({ userId: this._id, name: this.matricNumber }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_LIFETIME,
+        expiresIn: process.env.JWT_LIFETIME,
     });
-  };
+};
   
-  StudentSchema.methods.comparePassword = async function (password) {
+StudentSchema.methods.comparePassword = async function (password) {
     const isMatch = await bcrypt.compare(password, this.password);
     return isMatch;
-  };
+};
 
-  module.exports = mongoose.model("Student", StudentSchema);
+module.exports = mongoose.model("Student", StudentSchema);
