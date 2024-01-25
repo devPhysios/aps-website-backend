@@ -1,5 +1,5 @@
-import { StatusCodes } from 'http-status-codes';
-import CustomAPIError from './custom-api';
+const { StatusCodes } = require('http-status-codes');
+const CustomAPIError = require('./custom-api').default;
 
 class BadRequestError extends CustomAPIError {
   constructor(message) {

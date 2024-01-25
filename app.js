@@ -27,6 +27,7 @@ const authenticateStudent = require('./middleware/authentication'); //this is us
 
 // routers
 const authRouter = require("./routes/auth");
+const profile = require("./routes/profile")
 
 // error handler
 const notFound = require("./middleware/not-found");
@@ -34,6 +35,7 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 
 // routes
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/dashboard', profile);
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);
