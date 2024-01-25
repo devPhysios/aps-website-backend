@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { UnauthenticatedError } = require('../errors').default
+const { UnauthenticatedError } = require('../errors')
 
 const authenticateStudent = async (req, res, next) => {
     //check header
