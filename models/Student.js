@@ -69,14 +69,16 @@ const StudentSchema = new mongoose.Schema({
     },
     program: {
         type: String,
-        default: 'Physiotherapy'},
+        default: 'Physiotherapy'
+    },
     isAcademicCommittee: {
         type: Boolean,
         default: false
     },
     set: {
         type: String,
-        default: null
+        default: null,
+        required: [true, 'Please enter your set']
     },
     level: {
         type: String,
@@ -84,7 +86,7 @@ const StudentSchema = new mongoose.Schema({
         required: [true, 'Please enter your level']  
     },
     post: {
-        type: String,
+        type: Array,
         default: null
     },
     isAlumni: {
