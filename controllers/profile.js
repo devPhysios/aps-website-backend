@@ -2,8 +2,6 @@ const UnauthenticatedError = require("../errors/unauthenticated");
 const Student = require("../models/Student");
 const { StatusCodes } = require("http-status-codes");
 
-// TODO: Create the update and delete function
-
 const updateStudent = async (req, res) => {
   const { id } = req.params;
 
@@ -21,8 +19,27 @@ const updateStudent = async (req, res) => {
     );
 
     res.status(StatusCodes.OK).json({
-        student
-    })
+      student
+    });
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: err.message,
+    });
+  }
+};
+
+const getStudentDetails = async (req, res) => {
+  const { id } = req.query;
+  try {
+    const student = await Student.findById(id);
+
+    if (!student) {
+      throw new UnauthenticatedError("Student not found");
+    }
+
+    res.status(StatusCodes.OK).json({
+      student
+    });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: err.message,
@@ -31,5 +48,5 @@ const updateStudent = async (req, res) => {
 };
 
 module.exports = {
-    updateStudent
+    updateStudent, getStudentDetails
 }

@@ -9,6 +9,24 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ student: { name: student.matricNumber }, token });
 };
 
+// For populating the database with APS students
+
+// const registerMultipleStudents = async (req, res) => {
+//   try {
+//     const studentsData = require('../populate300L.json');
+//     const createdStudents = await Promise.all(
+//       studentsData.map(async (studentData) => {
+//         const student = await Student.create(studentData);
+//         return { name: student.matricNumber };
+//       })
+//     );
+//     res.status(201).json({ students: createdStudents });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
 const login = async (req, res) => {
   const { matricNumber, password } = req.body;
   if (!matricNumber || !password) {

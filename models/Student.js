@@ -7,26 +7,27 @@ const StudentSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter your first name'],
         trim: true,
-        match: [/^[a-zA-Z]+$/, 'Please enter a valid first name']
+        match: [/^[A-Za-z-]*$/, 'Please enter a valid first name']
     },
     lastName: {
         type: String,
         required: [true, 'Please enter your last name'],
         trim: true,
-        match: [/^[a-zA-Z]+$/, 'Please enter a valid last name']
+        match: [/^[A-Za-z-]*$/, 'Please enter a valid last name']
     },
     middleName: {
         type: String,
         required: [false],
         trim: true,
-        match: [/^[a-zA-Z]+$/, 'Please enter a valid middle name']
+        match: [/^[A-Za-z-]*$/, 'Please enter a valid middle name']
     },
     email: {
         type: String,
         default: null,
         trim: true,
-        unique: [true, 'Email already exists'],
-        match: [/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/, 'Please enter a valid email']
+        // Activate this after populating the database
+        // unique: [true, 'Email already exists'],
+        // match: [/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/, 'Please enter a valid email']
     },
     password: {
         type: String,
@@ -65,7 +66,8 @@ const StudentSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter your matric number'],
         trim: true,
-        unique: [true, 'Matric number already exists']
+        unique: [true, 'Matric number already exists'],
+        match: [/^[0-9]+$/, 'Please enter a valid matric number']
     },
     program: {
         type: String,
