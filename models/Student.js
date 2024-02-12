@@ -118,6 +118,10 @@ const StudentSchema = new mongoose.Schema({
     isSenator: {
         type: Boolean,
         default: false
+    },
+    firstLogin: {
+        type: Boolean,
+        default: true
     }
 })
 

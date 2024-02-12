@@ -5,10 +5,10 @@ const { BadRequestError, NotFoundError } = require('../errors');
 // Create a new image
 const createImage = async (req, res) => {
     try {
-        const { title, url, description } = req.body;
+        const { title, imageUrl, description, tags, features } = req.body;
 
         // Create a new image using the Gallery model
-        const image = await Gallery.create({ title, url, description });
+        const image = await Gallery.create({ title, imageUrl, description, tags, features });
 
         // Send a success response
         res.status(StatusCodes.OK).json({ message: 'Image created successfully' });
@@ -44,13 +44,13 @@ const getImages = async (req, res) => {
     }
 };
 
-// Fetch a single image by its ID, URL or title
+// Fetch a single image by its ID, imageUrl or title
 const getImage = async (req, res) => {
     try {
         const { id } = req.params;
 
         // Fetch the image from the Gallery model
-        const image = await Gallery.findOne({ $or: [{ _id: id }, { url: id }, { title: id }] });
+        const image = await Gallery.findOne({ $or: [{ _id: id }, { imageUrl: id }, { title: id }] });
 
         // If the image doesn't exist, send a 404 response
         if (!image) {
