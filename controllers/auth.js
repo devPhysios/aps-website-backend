@@ -80,7 +80,11 @@ const login = async (req, res) => {
         id: student._id,
         firstLogin: student.firstLogin,
         matricNumber: student.matricNumber,
-        name: student.firstName + (student.middleName ? ' ' + student.middleName : '') + ' ' + student.lastName,
+        name:
+          student.firstName +
+          (student.middleName ? " " + student.middleName : "") +
+          " " +
+          student.lastName,
       };
     } else {
       responseData.student = {
@@ -110,18 +114,27 @@ const login = async (req, res) => {
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
   }
 };
 
 const changePasswordAndSecurityQuestion = async (req, res) => {
   try {
-    const { oldPassword, newPassword, securityQuestion, securityAnswer } = req.body;
+    const {
+      oldPassword,
+      newPassword,
+      securityQuestion,
+      securityAnswer,
+    } = req.body;
     const { matricNumber } = req.user;
 
     // Check if all required fields are provided
     if (!oldPassword || !newPassword || !securityQuestion || !securityAnswer) {
-      throw new BadRequestError("Please provide old password, new password, security question, and security answer");
+      throw new BadRequestError(
+        "Please provide old password, new password, security question, and security answer"
+      );
     }
 
     const student = await Student.findOne({ matricNumber });
@@ -142,14 +155,20 @@ const changePasswordAndSecurityQuestion = async (req, res) => {
     await student.save();
 
     // Respond with success message
-    res.status(StatusCodes.OK).json({ success: true, message: "Password and security question updated successfully!" });
+    res
+      .status(StatusCodes.OK)
+      .json({
+        success: true,
+        message: "Password and security question updated successfully!",
+      });
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
   }
 };
-
 
 const changePassword = async (req, res) => {
   try {
@@ -178,24 +197,31 @@ const changePassword = async (req, res) => {
     await student.save();
 
     // Respond with success message
-    res.status(StatusCodes.OK).json({ success: true, message: "Password updated successfully" });
+    res
+      .status(StatusCodes.OK)
+      .json({ success: true, message: "Password updated successfully" });
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
   }
 };
-
 
 const resetPassword = async (req, res) => {
   try {
     const { newPassword, securityQuestion, securityAnswer } = req.body;
     const { matricNumber } = req.user;
-    
+    const isSecurityAnswerCorrect = await student.compareSecurity(
+      securityAnswer
+    );
     // Check if all required fields are provided
     if (!newPassword || !securityQuestion || !securityAnswer) {
-      throw new BadRequestError("Please provide new password, security question, and security answer");
-    }
+      throw new BadRequestError(
+        "Please provide new password, security question, and security answer"
+      );
+    };
 
     // Find the student based on the provided matricNumber
     const student = await Student.findOne({ matricNumber });
@@ -204,8 +230,13 @@ const resetPassword = async (req, res) => {
     }
 
     // Check if the security question and answer match
-    if (student.securityQuestion !== securityQuestion || student.securityAnswer !== securityAnswer) {
-      throw new UnauthenticatedError("Security question or answer is incorrect");
+    if (
+      student.securityQuestion !== securityQuestion ||
+      !isSecurityAnswerCorrect
+    ) {
+      throw new UnauthenticatedError(
+        "Security question or answer is incorrect"
+      );
     }
 
     // Update the password
@@ -213,16 +244,20 @@ const resetPassword = async (req, res) => {
     await student.save();
 
     // Respond with success message
-    res.status(StatusCodes.OK).json({ success: true, message: "Password reset successfully" });
+    res
+      .status(StatusCodes.OK)
+      .json({ success: true, message: "Password reset successfully" });
   } catch (error) {
-    // Handle errors
     console.error(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
   }
 };
 
-
-
-
-
-module.exports = { login, changePasswordAndSecurityQuestion, changePassword, resetPassword };
+module.exports = {
+  login,
+  changePasswordAndSecurityQuestion,
+  changePassword,
+  resetPassword,
+};
