@@ -1,11 +1,12 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 const { login, changePassword, resetPassword, changePasswordAndSecurityQuestion } = require('../controllers/auth');
+const verifyToken = require('../middleware/authentication')
 // router.post('/register', register)
 router.post('/login', login);
-router.post('/changepw', changePassword);
-router.post('/resetpw', resetPassword);
-router.post('/cpasq', changePasswordAndSecurityQuestion);
+router.post('/changepw', verifyToken, changePassword);
+router.post('/resetpw', verifyToken, resetPassword);
+router.post('/cpasq', verifyToken, changePasswordAndSecurityQuestion);
 // router.get('/getStudents', fetchAndStoreStudents)
 // router.post('/populate', registerMultipleStudents)
 

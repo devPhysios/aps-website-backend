@@ -116,9 +116,12 @@ const login = async (req, res) => {
 
 const changePasswordAndSecurityQuestion = async (req, res) => {
   try {
-    const { matricNumber, oldPassword, newPassword, securityQuestion, securityAnswer } = req.body;
-    if (!matricNumber || !oldPassword || !newPassword || !securityQuestion || !securityAnswer) {
-      throw new BadRequestError("Please provide Matric No, old password, new password, security question, and security answer");
+    const { oldPassword, newPassword, securityQuestion, securityAnswer } = req.body;
+    const { matricNumber } = req.user;
+
+    // Check if all required fields are provided
+    if (!oldPassword || !newPassword || !securityQuestion || !securityAnswer) {
+      throw new BadRequestError("Please provide old password, new password, security question, and security answer");
     }
 
     const student = await Student.findOne({ matricNumber });
@@ -126,77 +129,99 @@ const changePasswordAndSecurityQuestion = async (req, res) => {
       throw new UnauthenticatedError("Student not found");
     }
 
+    // Verify the old password
     const isPasswordCorrect = await student.comparePassword(oldPassword);
     if (!isPasswordCorrect) {
       throw new UnauthenticatedError("Invalid Old Password");
     }
 
+    // Update the password and security question/answer
     student.password = newPassword;
-    await student.save();
-
     student.securityQuestion = securityQuestion;
     student.securityAnswer = securityAnswer;
     await student.save();
 
-    res.status(StatusCodes.OK).json({ success: true, message: "Password and security question updated successfully!"});
+    // Respond with success message
+    res.status(StatusCodes.OK).json({ success: true, message: "Password and security question updated successfully!" });
   } catch (error) {
-
+    // Handle errors
     console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 };
 
+
 const changePassword = async (req, res) => {
   try {
-    const { matricNumber, oldPassword, newPassword } = req.body;
-    if (!matricNumber || !oldPassword || !newPassword) {
-      throw new BadRequestError("Please provide Matric No, old password, and new password");
+    const { oldPassword, newPassword } = req.body;
+    const { matricNumber } = req.user;
+
+    // Check if all required fields are provided
+    if (!oldPassword || !newPassword) {
+      throw new BadRequestError("Please provide old password and new password");
     }
 
+    // Find the student based on the provided matricNumber
     const student = await Student.findOne({ matricNumber });
     if (!student) {
       throw new UnauthenticatedError("Student not found");
     }
 
+    // Verify the old password
     const isPasswordCorrect = await student.comparePassword(oldPassword);
     if (!isPasswordCorrect) {
       throw new UnauthenticatedError("Invalid Old Password");
     }
+
+    // Update the password
     student.password = newPassword;
     await student.save();
 
-    res.status(StatusCodes.OK).json({success:true, message: "Password updated successfully" });
+    // Respond with success message
+    res.status(StatusCodes.OK).json({ success: true, message: "Password updated successfully" });
   } catch (error) {
+    // Handle errors
     console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 };
 
+
 const resetPassword = async (req, res) => {
   try {
-    const { matricNumber, newPassword, securityQuestion, securityAnswer } = req.body;
-    if (!matricNumber || !newPassword || !securityQuestion || !securityAnswer) {
-      throw new BadRequestError("Please provide Matric No, new password, security question, and security answer");
+    const { newPassword, securityQuestion, securityAnswer } = req.body;
+    const { matricNumber } = req.user;
+    
+    // Check if all required fields are provided
+    if (!newPassword || !securityQuestion || !securityAnswer) {
+      throw new BadRequestError("Please provide new password, security question, and security answer");
     }
 
+    // Find the student based on the provided matricNumber
     const student = await Student.findOne({ matricNumber });
     if (!student) {
       throw new UnauthenticatedError("Student not found");
     }
 
+    // Check if the security question and answer match
     if (student.securityQuestion !== securityQuestion || student.securityAnswer !== securityAnswer) {
       throw new UnauthenticatedError("Security question or answer is incorrect");
     }
 
+    // Update the password
     student.password = newPassword;
     await student.save();
 
-    res.status(StatusCodes.OK).json({ success: true, message: "Password reset successfully"});
+    // Respond with success message
+    res.status(StatusCodes.OK).json({ success: true, message: "Password reset successfully" });
   } catch (error) {
+    // Handle errors
     console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 };
+
+
 
 
 
