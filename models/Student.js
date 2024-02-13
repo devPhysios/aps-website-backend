@@ -128,9 +128,12 @@ const StudentSchema = new mongoose.Schema({
 StudentSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  if (this.securityAnswer) {
+    this.securityAnswer = await bcrypt.hash(this.securityAnswer, salt);
+  }
   next();
-  this.securityAnswer = await bcrypt.hash(this.securityAnswer, salt);
 });
+
 
 StudentSchema.methods.createJWT = function () {
   return jwt.sign(
@@ -151,5 +154,6 @@ StudentSchema.methods.compareSecurity = async function (securityAnswer) {
   const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);
   return isMatch;
 };
+
 
 module.exports = mongoose.model("Student", StudentSchema);

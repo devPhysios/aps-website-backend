@@ -2,7 +2,9 @@ const Student = require("../models/Student");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 const fs = require("fs");
-
+const capitalize = (word) => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
 // const register = async (req, res) => {
 //   const student = await Student.create({ ...req.body });
 //   const token = student.createJWT();
@@ -80,11 +82,8 @@ const login = async (req, res) => {
         id: student._id,
         firstLogin: student.firstLogin,
         matricNumber: student.matricNumber,
-        name:
-          student.firstName +
-          (student.middleName ? " " + student.middleName : "") +
-          " " +
-          student.lastName,
+        fullName:
+        `${capitalize(student.firstName)} ${student.middleName ? capitalize(student.middleName) + ' ' : ''}${capitalize(student.lastName)}`,
       };
     } else {
       responseData.student = {
@@ -110,13 +109,13 @@ const login = async (req, res) => {
       };
     }
 
-    res.status(StatusCodes.OK).json(responseData);
+    res.status(StatusCodes.OK).json({responseData, success: true});
   } catch (error) {
     // Handle errors
     console.error(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: error.message });
+      .json({ error: error.message, success: false});
   }
 };
 
@@ -152,6 +151,7 @@ const changePasswordAndSecurityQuestion = async (req, res) => {
     student.password = newPassword;
     student.securityQuestion = securityQuestion;
     student.securityAnswer = securityAnswer;
+    student.firstLogin = false;
     await student.save();
 
     // Respond with success message
