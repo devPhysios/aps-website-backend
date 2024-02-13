@@ -1,6 +1,6 @@
 const Student = require("../models/Student");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors");
+const { BadRequestError, UnauthenticatedError, NotFoundError  } = require("../errors");
 const fs = require("fs");
 const capitalize = (word) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -33,42 +33,44 @@ const capitalize = (word) => {
 
 // For populating the database with APS students
 
-// const registerMultipleStudents = async (req, res) => {
-//   try {
-//     const studentsData = require("../populate300L.json");
-//     const createdStudents = await Promise.all(
-//       studentsData.map(async (studentData) => {
-//         const student = await Student.create(studentData);
-//         return { name: student.matricNumber };
-//       })
-//     );
-//     res
-//       .status(201)
-//       .json({
-//         students: createdStudents,
-//         message: `${createdStudents.length} students created successfully!`,
-//       });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
+const registerMultipleStudents = async (req, res) => {
+  try {
+    const studentsData = require("../populate400L.json");
+    const createdStudents = await Promise.all(
+      studentsData.map(async (studentData) => {
+        const student = await Student.create(studentData);
+        return { name: student.matricNumber };
+      })
+    );
+    res
+      .status(201)
+      .json({
+        students: createdStudents,
+        message: `${createdStudents.length} students created successfully!`,
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 const login = async (req, res) => {
   try {
     const { matricNumber, password } = req.body;
     if (!matricNumber || !password) {
-      throw new BadRequestError("Please provide Matric No and password");
+      return res.status(StatusCodes.BAD_REQUEST).json({ success: false, error: "Matric number and password are required." });
     }
 
     const student = await Student.findOne({ matricNumber });
+
     if (!student) {
-      throw new UnauthenticatedError("Student not found");
+      return res.status(StatusCodes.NOT_FOUND).json({ success: false, error: "Student not found." });
     }
 
     const isPasswordCorrect = await student.comparePassword(password);
+
     if (!isPasswordCorrect) {
-      throw new UnauthenticatedError("Invalid Password");
+      return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, error: "Incorrect password." });
     }
 
     const token = student.createJWT();
@@ -131,20 +133,22 @@ const changePasswordAndSecurityQuestion = async (req, res) => {
 
     // Check if all required fields are provided
     if (!oldPassword || !newPassword || !securityQuestion || !securityAnswer) {
-      throw new BadRequestError(
-        "Please provide old password, new password, security question, and security answer"
-      );
+      return res
+      .status(StatusCodes.BAD_REQUEST).json({ success: false, error: "Please provide old password, new password, security question, and security answer" });
+
     }
 
     const student = await Student.findOne({ matricNumber });
     if (!student) {
-      throw new UnauthenticatedError("Student not found");
+      return res
+      .status(StatusCodes.NOT_FOUND).json({ success: false, error: "Student not found" });
     }
 
     // Verify the old password
     const isPasswordCorrect = await student.comparePassword(oldPassword);
     if (!isPasswordCorrect) {
-      throw new UnauthenticatedError("Invalid Old Password");
+      return res
+      .status(StatusCodes.UNAUTHORIZED).json({ success: false, error: "Invalid Old Password" });
     }
 
     // Update the password and security question/answer
@@ -260,4 +264,5 @@ module.exports = {
   changePasswordAndSecurityQuestion,
   changePassword,
   resetPassword,
+  registerMultipleStudents
 };
