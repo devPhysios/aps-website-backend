@@ -137,7 +137,7 @@ StudentSchema.pre("save", async function (next) {
 
 StudentSchema.methods.createJWT = function () {
   return jwt.sign(
-    { userId: this._id, name: this.matricNumber },
+    { studentId: this._id, matricNumber: this.matricNumber },
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_LIFETIME,
