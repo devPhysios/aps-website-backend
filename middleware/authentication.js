@@ -5,16 +5,19 @@ const authenticateStudent = async (req, res, next) => {
     //check header
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        throw new UnauthenticatedError('Authentication invalid - No token')
+        return res.status(401).json({ error: 'Not authorized to access this route' })
     }
     const token = authHeader.split(' ')[1]
     try {
+        console.log("Incoming token:", token);
         const payload = jwt.verify(token, process.env.JWT_SECRET)
+        console.log("Decoded payload:", payload);
         //attach student to the req object
-        req.student = { studentId: payload.studentId, matricNumber: payload.matricNumber }
+        req.student = { studentId: payload.userId, matricNumber: payload.name }
+        console.log(req.student)
         next()
     } catch (error) {
-        throw new UnauthenticatedError('Authentication invalid - ')
+        return res.status(401).json({ error: error.message })
     }
 }
 
