@@ -13,7 +13,7 @@ const authenticateStudent = async (req, res, next) => {
         const payload = jwt.verify(token, process.env.JWT_SECRET)
         console.log("Decoded payload:", payload);
         //attach student to the req object
-        req.student = { studentId: payload.userId, matricNumber: payload.name }
+        req.student = { studentId: payload.studentId, matricNumber: payload.matricNumber }
         console.log(req.student)
         next()
     } catch (error) {
