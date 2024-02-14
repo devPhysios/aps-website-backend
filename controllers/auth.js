@@ -129,7 +129,7 @@ const changePasswordAndSecurityQuestion = async (req, res) => {
       securityQuestion,
       securityAnswer,
     } = req.body;
-    const { matricNumber } = req.user;
+    const { matricNumber } = req.student;
 
     // Check if all required fields are provided
     if (!oldPassword || !newPassword || !securityQuestion || !securityAnswer) {
