@@ -1,10 +1,9 @@
 const Student = require("../models/Student");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError, NotFoundError  } = require("../errors");
 const fs = require("fs");
 const capitalize = (word) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
-}
+};
 // const register = async (req, res) => {
 //   const student = await Student.create({ ...req.body });
 //   const token = student.createJWT();
@@ -42,12 +41,10 @@ const registerMultipleStudents = async (req, res) => {
         return { name: student.matricNumber };
       })
     );
-    res
-      .status(201)
-      .json({
-        students: createdStudents,
-        message: `${createdStudents.length} students created successfully!`,
-      });
+    res.status(201).json({
+      students: createdStudents,
+      message: `${createdStudents.length} students created successfully!`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -58,19 +55,28 @@ const login = async (req, res) => {
   try {
     const { matricNumber, password } = req.body;
     if (!matricNumber || !password) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ success: false, error: "Matric number and password are required." });
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          success: false,
+          error: "Matric number and password are required.",
+        });
     }
 
     const student = await Student.findOne({ matricNumber });
 
     if (!student) {
-      return res.status(StatusCodes.NOT_FOUND).json({ success: false, error: "Student not found." });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ success: false, error: "Student not found." });
     }
 
     const isPasswordCorrect = await student.comparePassword(password);
 
     if (!isPasswordCorrect) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, error: "Incorrect password." });
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ success: false, error: "Incorrect password." });
     }
 
     const token = student.createJWT();
@@ -84,8 +90,9 @@ const login = async (req, res) => {
         id: student._id,
         firstLogin: student.firstLogin,
         matricNumber: student.matricNumber,
-        fullName:
-        `${capitalize(student.firstName)} ${student.middleName ? capitalize(student.middleName) + ' ' : ''}${capitalize(student.lastName)}`,
+        fullName: `${capitalize(student.firstName)} ${
+          student.middleName ? capitalize(student.middleName) + " " : ""
+        }${capitalize(student.lastName)}`,
       };
     } else {
       responseData.student = {
@@ -111,13 +118,13 @@ const login = async (req, res) => {
       };
     }
 
-    res.status(StatusCodes.OK).json({responseData, success: true});
+    res.status(StatusCodes.OK).json({ responseData, success: true });
   } catch (error) {
     // Handle errors
     console.error(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: error.message, success: false});
+      .json({ error: error.message, success: false });
   }
 };
 
@@ -130,26 +137,31 @@ const changePasswordAndSecurityQuestion = async (req, res) => {
       securityAnswer,
     } = req.body;
     const { matricNumber } = req.student;
-   
 
     // Check if all required fields are provided
     if (!oldPassword || !newPassword || !securityQuestion || !securityAnswer) {
       return res
-      .status(StatusCodes.BAD_REQUEST).json({ success: false, error: "Please provide old password, new password, security question, and security answer" });
-
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          success: false,
+          error:
+            "Please provide old password, new password, security question, and security answer",
+        });
     }
 
     const student = await Student.findOne({ matricNumber });
     if (!student) {
       return res
-      .status(StatusCodes.NOT_FOUND).json({ success: false, error: "Student not found" });
+        .status(StatusCodes.NOT_FOUND)
+        .json({ success: false, error: "Student not found" });
     }
 
     // Verify the old password
     const isPasswordCorrect = await student.comparePassword(oldPassword);
     if (!isPasswordCorrect) {
       return res
-      .status(StatusCodes.UNAUTHORIZED).json({ success: false, error: "Invalid Old Password" });
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ success: false, error: "Invalid Old Password" });
     }
 
     // Update the password and security question/answer
@@ -160,12 +172,10 @@ const changePasswordAndSecurityQuestion = async (req, res) => {
     await student.save();
 
     // Respond with success message
-    res
-      .status(StatusCodes.OK)
-      .json({
-        success: true,
-        message: "Password and security question updated successfully!",
-      });
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Password and security question updated successfully!",
+    });
   } catch (error) {
     // Handle errors
     console.error(error);
@@ -178,23 +188,32 @@ const changePasswordAndSecurityQuestion = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
-    const { matricNumber } = req.user;
+    const { matricNumber } = req.student;
 
     // Check if all required fields are provided
     if (!oldPassword || !newPassword) {
-      throw new BadRequestError("Please provide old password and new password");
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          success: false,
+          error: "Please provide old password and new password",
+        });
     }
 
     // Find the student based on the provided matricNumber
     const student = await Student.findOne({ matricNumber });
     if (!student) {
-      throw new UnauthenticatedError("Student not found");
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ success: false, error: "Student not found" });
     }
 
     // Verify the old password
     const isPasswordCorrect = await student.comparePassword(oldPassword);
     if (!isPasswordCorrect) {
-      throw new UnauthenticatedError("Invalid Old Password");
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ success: false, error: "Invalid Old Password" });
     }
 
     // Update the password
@@ -217,21 +236,27 @@ const changePassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { newPassword, securityQuestion, securityAnswer } = req.body;
-    const { matricNumber } = req.user;
+    const { matricNumber } = req.student;
     const isSecurityAnswerCorrect = await student.compareSecurity(
       securityAnswer
     );
     // Check if all required fields are provided
     if (!newPassword || !securityQuestion || !securityAnswer) {
-      throw new BadRequestError(
-        "Please provide new password, security question, and security answer"
-      );
-    };
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          success: false,
+          error:
+            "Please provide new password, security question, and security answer",
+        });
+    }
 
     // Find the student based on the provided matricNumber
     const student = await Student.findOne({ matricNumber });
     if (!student) {
-      throw new UnauthenticatedError("Student not found");
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ success: false, error: "Student not found" });
     }
 
     // Check if the security question and answer match
@@ -239,9 +264,12 @@ const resetPassword = async (req, res) => {
       student.securityQuestion !== securityQuestion ||
       !isSecurityAnswerCorrect
     ) {
-      throw new UnauthenticatedError(
-        "Security question or answer is incorrect"
-      );
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({
+          success: false,
+          error: "Invalid Security Question or Security Answer",
+        });
     }
 
     // Update the password
@@ -265,5 +293,5 @@ module.exports = {
   changePasswordAndSecurityQuestion,
   changePassword,
   resetPassword,
-  registerMultipleStudents
+  registerMultipleStudents,
 };

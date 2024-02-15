@@ -6,12 +6,17 @@ const mcqQuestionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    options: {
+    imgURL: {
         type: String,
+        default: null,
+        required: false
+    },
+    options: {
+        type: Array,
         required: true
     },
     correctOption: {
-        type: Number,
+        type: String,
         required: true
     },
     courseCode: {
@@ -22,9 +27,33 @@ const mcqQuestionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    year: {
+        type: String,
+        required: true
+    },
     tags: {
         type: Array,
-        default:[]
+        default:[],
+    },
+    createdBy: {
+        type: String,
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedTimeHistory: {
+        type: Array,
+        default: null
+    },
+    updatedStudentHistory: {
+        type: Array,
+        default: null
+    },
+    lecturer: {
+        type: String,
+        required: false
     }
 });
 
@@ -34,9 +63,50 @@ const fillInTheGapQuestionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    imgURL: {
+        type: String,
+        default: null,
+        required: false
+    },
     answer: {
+        type: Array,
+        required: true
+    },
+    courseCode: {
         type: String,
         required: true
+    },
+    level: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: String,
+        required: true
+    },
+    tags: {
+        type: Array,
+        default:[]
+    },
+    createdBy: {
+        type: String,
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedTimeHistory: {
+        type: Array,
+        default: null
+    },
+    updatedStudentHistory: {
+        type: Array,
+        default: null
+    },
+    lecturer: {
+        type: String,
+        required: false
     }
 });
 
@@ -45,6 +115,51 @@ const essayQuestionSchema = new mongoose.Schema({
     question: {
         type: String,
         required: true
+    },
+    imgURL: {
+        type: String,
+        default: null,
+        required: false
+    },
+    courseCode: {
+        type: String,
+        required: true
+    },
+    level: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: String,
+        required: true
+    },
+    tags: {
+        type: Array,
+        default:[]
+    },
+    createdBy: {
+        type: String,
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    answer: {
+        type: String,
+        required: false
+    },
+    updatedTimeHistory: {
+        type: Array,
+        default: null
+    },
+    updatedStudentHistory: {
+        type: Array,
+        default: null
+    },
+    lecturer: {
+        type: String,
+        required: false
     }
 });
 
