@@ -34,7 +34,7 @@ const capitalize = (word) => {
 
 const registerMultipleStudents = async (req, res) => {
   try {
-    const studentsData = require("../populate400L.json");
+    const studentsData = require("../populate300L.json");
     const createdStudents = await Promise.all(
       studentsData.map(async (studentData) => {
         const student = await Student.create(studentData);

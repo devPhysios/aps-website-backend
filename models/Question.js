@@ -15,8 +15,8 @@ const mcqQuestionSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
-    correctOption: {
-        type: String,
+    answer: {
+        type: Array,
         required: true
     },
     courseCode: {

@@ -6,7 +6,6 @@ const createQuestion = async (req, res) => {
   try {
     // Check if the student is a member of the academic committee
     const { matricNumber } = req.student;
-
     // Find the student based on the provided matricNumber
     const student = await Student.findOne({ matricNumber });
     if (!student) {
@@ -26,19 +25,18 @@ const createQuestion = async (req, res) => {
       question,
       imgURL,
       options,
-      correctOption,
+      answer,
       courseCode,
       level,
       year,
       tags,
       lecturer,
     } = req.body;
-
     const mcqQuestion = new MCQQuestion({
       question,
       imgURL,
       options,
-      correctOption,
+      answer,
       courseCode,
       level,
       year,
@@ -57,6 +55,7 @@ const createQuestion = async (req, res) => {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: "Internal Server Error" });
+      
   }
 };
 
