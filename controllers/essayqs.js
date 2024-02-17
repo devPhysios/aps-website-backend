@@ -28,7 +28,7 @@ const createQuestion = async (req, res) => {
       lecturer
     } = req.body;
 
-    const EssayQuestion = new EssayQuestion({
+    const essayquestion = new EssayQuestion({
       question,
       imgURL,
       answer,
@@ -40,12 +40,13 @@ const createQuestion = async (req, res) => {
       lecturer,
     });
 
-    await EssayQuestion.save();
+    await essayquestion.save();
 
     return res.status(201).json({
       message: "Question created successfully"
     });
   } catch (error) {
+    console.log(error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
   }
 };
@@ -160,8 +161,6 @@ const editQuestion = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
     }
 };
-
-
 
 const deleteQuestion = async (req, res) => {
   try {
