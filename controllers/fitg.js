@@ -153,7 +153,7 @@ const editQuestion = async (req, res) => {
         question.updatedTimeHistory.push(Date.now());
         question.updatedStudentHistory.push(student.matricNumber);
 
-        await question.save();
+        await question.updateOne(question);
 
         res.status(StatusCodes.OK).json({ message: 'Question updated successfully', question });
     } catch (error) {
