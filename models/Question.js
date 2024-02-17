@@ -69,7 +69,7 @@ const fillInTheGapQuestionSchema = new mongoose.Schema({
         required: false
     },
     answer: {
-        type: Array,
+        type: String,
         required: true
     },
     courseCode: {

@@ -43,8 +43,7 @@ const createQuestion = async (req, res) => {
     await fillInTheGapQuestion.save();
 
     return res.status(201).json({
-      message: "Question created successfully",
-      fillInTheGapQuestion,
+      message: "Question uploaded successfully"
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });

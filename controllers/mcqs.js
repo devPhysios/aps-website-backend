@@ -48,8 +48,7 @@ const createQuestion = async (req, res) => {
     await mcqQuestion.save();
 
     return res.status(StatusCodes.CREATED).json({
-      message: "MCQ question created successfully",
-      mcqQuestion,
+      message: "MCQ question created successfully"
     });
   } catch (error) {
     return res

@@ -30,7 +30,9 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const galleryRouter = require("./routes/gallery");
 const mcqRouter = require("./routes/mcqs");
+const fitgRouter = require("./routes/fitg");
 const updateRouter = require("./routes/updatestudentproperties");
+
 
 
 // routes
@@ -38,6 +40,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/dashboard', profileRouter);
 app.use('/api/v1/gallery', galleryRouter);
 app.use('/api/v1/mcq', mcqRouter);
+app.use('/api/v1/fitg', fitgRouter);
 app.use('/api/v1/update', updateRouter);
 
 

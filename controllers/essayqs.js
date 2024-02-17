@@ -43,8 +43,7 @@ const createQuestion = async (req, res) => {
     await EssayQuestion.save();
 
     return res.status(201).json({
-      message: "Question created successfully",
-      EssayQuestion,
+      message: "Question created successfully"
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
