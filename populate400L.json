@@ -150,7 +150,7 @@
       "middleName": "oluchi",
       "set": "2k22",
       "level": "400",
-      "post": ["Senator", "Senate Clerk"],
+      "post": ["Senate Clerk"],
       "isExecutive": false,
       "isSenator": true,
       "password": "egun"
@@ -294,7 +294,7 @@
       "middleName": "peter",
       "set": "2k22",
       "level": "400",
-      "post": ["senator"],
+      "post": ["Senator"],
       "isExecutive": false,
       "isSenator": true,
       "password": "oyebola"
@@ -342,7 +342,7 @@
       "middleName": "omotayo",
       "set": "2k22",
       "level": "400",
-      "post": ["Senator", "Deputy Senate President"],
+      "post": ["Deputy Senate President"],
       "isExecutive": false,
       "isSenator": true,
       "password": "goodluck"
