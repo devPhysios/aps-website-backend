@@ -235,22 +235,18 @@ const changePassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    const { newPassword, securityQuestion, securityAnswer } = req.body;
-    const { matricNumber } = req.student;
-    const isSecurityAnswerCorrect = await student.compareSecurity(
-      securityAnswer
-    );
+    const { securityQuestion, securityAnswer, matricNumber } = req.body;
     // Check if all required fields are provided
-    if (!newPassword || !securityQuestion || !securityAnswer) {
+    if (!matricNumber || !securityQuestion || !securityAnswer) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({
           success: false,
           error:
-            "Please provide new password, security question, and security answer",
+            "Please provide your Matric Number, security question, and security answer",
         });
     }
-
+    
     // Find the student based on the provided matricNumber
     const student = await Student.findOne({ matricNumber });
     if (!student) {
@@ -258,7 +254,10 @@ const resetPassword = async (req, res) => {
         .status(StatusCodes.NOT_FOUND)
         .json({ success: false, error: "Student not found" });
     }
-
+    // Compare the security answer
+    const isSecurityAnswerCorrect = await student.compareSecurity(
+      securityAnswer
+    );
     // Check if the security question and answer match
     if (
       student.securityQuestion !== securityQuestion ||
@@ -273,13 +272,14 @@ const resetPassword = async (req, res) => {
     }
 
     // Update the password
-    student.password = newPassword;
+    student.password = student.lastName;
+    student.firstLogin = true;
     await student.save();
 
     // Respond with success message
     res
       .status(StatusCodes.OK)
-      .json({ success: true, message: "Password reset successfully" });
+      .json({ success: true, message: "Password reset successfully. Your surname is now your password. Please update it. Thanks" });
   } catch (error) {
     console.error(error);
     res

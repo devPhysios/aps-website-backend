@@ -5,7 +5,7 @@ const verifyToken = require('../middleware/authentication')
 // router.post('/register', register)
 router.post('/login', login);
 router.post('/changepw', verifyToken, changePassword);
-router.post('/resetpw', verifyToken, resetPassword);
+router.post('/resetpw', resetPassword);
 router.post('/cpasq', verifyToken, changePasswordAndSecurityQuestion);
 // router.get('/getStudents', fetchAndStoreStudents)
 router.post('/populate', registerMultipleStudents)
