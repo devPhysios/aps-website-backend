@@ -2,6 +2,17 @@ const Gallery = require('../models/Gallery');
 const {StatusCodes} = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors');
 
+//receive dummy request from frontend
+const dummyRequest = async (req, res) => {
+    try {
+        // Send a success response
+        res.status(StatusCodes.OK).json({ message: 'Dummy request received successfully' });
+    } catch (error) {
+        // Handle any errors and send an appropriate response
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Something went wrong' });
+    }
+}
+
 // Create a new image
 const createImage = async (req, res) => {
     try {
@@ -69,4 +80,4 @@ const getImage = async (req, res) => {
     }
 };
 
-module.exports = { createImage, getImages, getImage };
+module.exports = { createImage, getImages, getImage, dummyRequest };
