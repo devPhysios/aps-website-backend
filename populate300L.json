@@ -1,6 +1,5 @@
 [
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ce7",
     "firstName": "goodness",
     "lastName": "adeagbo",
@@ -27,7 +26,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cea",
     "firstName": "toluwalase",
     "lastName": "adegboye",
@@ -54,7 +52,6 @@
     "isSenator": true
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ceb",
     "firstName": "isinmi",
     "lastName": "adeniran",
@@ -81,7 +78,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cec",
     "firstName": "oluwadamilola",
     "lastName": "adeniran",
@@ -108,7 +104,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ced",
     "firstName": "Timothy",
     "lastName": "Adeyemo",
@@ -135,7 +130,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ce8",
     "firstName": "olalekan",
     "lastName": "adebayo",
@@ -162,7 +156,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ce9",
     "firstName": "baderin",
     "lastName": "adebobola",
@@ -189,7 +182,6 @@
     "isSenator": true
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf0",
     "firstName": "abraham",
     "lastName": "ajibade",
@@ -216,7 +208,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf1",
     "firstName": "israel",
     "lastName": "akinboyewa",
@@ -243,7 +234,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf2",
     "firstName": "oluwasegun",
     "lastName": "akinwola",
@@ -270,7 +260,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf3",
     "firstName": "temitope",
     "lastName": "akinyokun",
@@ -297,7 +286,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf6",
     "firstName": "joshua",
     "lastName": "fashola",
@@ -324,7 +312,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf5",
     "firstName": "joshua",
     "lastName": "ekundayo",
@@ -351,7 +338,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf4",
     "firstName": "iyanuoluwa",
     "lastName": "aronimoh",
@@ -378,7 +364,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf7",
     "firstName": "alimat",
     "lastName": "idowu",
@@ -405,7 +390,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf8",
     "firstName": "ayomide",
     "lastName": "james",
@@ -432,7 +416,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf9",
     "firstName": "ridwan",
     "lastName": "lawal",
@@ -459,7 +442,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfa",
     "firstName": "salam",
     "lastName": "moshood",
@@ -486,7 +468,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfb",
     "firstName": "ogo-oluwa",
     "lastName": "mustapha",
@@ -513,7 +494,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfc",
     "firstName": "cynthia",
     "lastName": "nlemadim",
@@ -540,7 +520,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cee",
     "firstName": "aanuoluwapo",
     "lastName": "adeyera",
@@ -567,7 +546,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cef",
     "firstName": "victor",
     "lastName": "adeyeye",
@@ -594,7 +572,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d01",
     "firstName": "oreoluwa",
     "lastName": "okunola",
@@ -621,7 +598,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d00",
     "firstName": "kehinde",
     "lastName": "ogunyele",
@@ -648,7 +624,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cff",
     "firstName": "emmanuel",
     "lastName": "ogunsanwo",
@@ -675,7 +650,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d02",
     "firstName": "praise",
     "lastName": "osalusi",
@@ -702,7 +676,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d06",
     "firstName": "godlives",
     "lastName": "patrick",
@@ -729,7 +702,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d04",
     "firstName": "oluwagbemisola",
     "lastName": "oyegunju",
@@ -756,7 +728,6 @@
     "isSenator": true
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d05",
     "firstName": "favour",
     "lastName": "oyewale",
@@ -783,7 +754,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d03",
     "firstName": "kole",
     "lastName": "oso",
@@ -810,7 +780,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d07",
     "firstName": "bankole",
     "lastName": "rufus",
@@ -837,7 +806,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d09",
     "firstName": "nofiat",
     "lastName": "salaudeen",
@@ -864,7 +832,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d08",
     "firstName": "adedoyin",
     "lastName": "salami",
@@ -891,7 +858,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d0a",
     "firstName": "segun",
     "lastName": "sholanke",
@@ -918,7 +884,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfe",
     "firstName": "adedamola",
     "lastName": "ogunlela",
@@ -945,7 +910,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfd",
     "firstName": "jacintha",
     "lastName": "nosazeogie",
