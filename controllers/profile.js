@@ -3,7 +3,8 @@ const Student = require("../models/Student");
 const { StatusCodes } = require("http-status-codes");
 
 const updateStudent = async (req, res) => {
-  const { matricNumber } = req.student;
+  const { matricNumber } = req.body
+
   try {
     const studentToUpdate = await Student.findOne({ matricNumber });
 
@@ -36,6 +37,7 @@ const getStudentDetails = async (req, res) => {
       throw new UnauthenticatedError("Student not found");
     }
 
+    console.log(student)
     res.status(StatusCodes.OK).json({
       student
     });
