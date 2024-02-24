@@ -18,7 +18,7 @@
     "middleName": "ayomide",
     "set": "2k21",
     "level": "500",
-    "post": ["President"],
+    "post": ["President, Class Representative"],
     "isExecutive": true,
     "isSenator": false,
     "password": "elijah"
@@ -282,7 +282,7 @@
     "middleName": "osazuwamen",
     "set": "2k21",
     "level": "500",
-    "post": ["Senator"],
+    "post": ["Senator", "Assistant Course Representative (Academic)"],
     "isExecutive": false,
     "isSenator": true,
     "password": "obano"
