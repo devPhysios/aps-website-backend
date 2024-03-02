@@ -128,8 +128,8 @@ const login = async (req, res) => {
         middleName: student.middleName,
         email: student.email,
         gender: student.gender,
-        month: student.monthOfBirth,
-        day: student.dayOfBirth,
+        monthOfBirth: student.monthOfBirth,
+        dayOfBirth: student.dayOfBirth,
         level: student.level,
         post: student.post,
         isAlumni: student.isAlumni,
@@ -139,6 +139,8 @@ const login = async (req, res) => {
         roomNo: student.roomNo,
         isAcademicCommittee: student.isAcademicCommittee,
         isSenator: student.isSenator,
+        classSet: student.classSet,
+        program: student.program
       };
     }
 

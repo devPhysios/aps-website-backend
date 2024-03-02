@@ -77,7 +77,7 @@ const StudentSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  set: {
+  classSet: {
     type: String,
     default: null,
     required: [true, "Please enter your set"],
