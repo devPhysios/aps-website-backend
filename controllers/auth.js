@@ -268,12 +268,21 @@ const resetPassword = async (req, res) => {
     }
 
     // Find the student based on the provided matricNumber
-    const student = await Student.findOne({ matricNumber });
+    const student = await Student.findOne({ matricNumber }).select('+securityAnswer');
     if (!student) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ success: false, error: "Student not found" });
     }
+
+    // check if the student has a security question and answer
+    if (!student.securityQuestion || !student.securityAnswer) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        error: "You have not set a security question and answer",
+      });
+    }
+
     // Compare the security answer
     const isSecurityAnswerCorrect = await student.compareSecurity(
       securityAnswer

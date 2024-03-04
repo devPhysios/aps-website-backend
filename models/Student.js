@@ -151,6 +151,7 @@ StudentSchema.methods.comparePassword = async function (password) {
 };
 
 StudentSchema.methods.compareSecurity = async function (securityAnswer) {
+  
   const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);
   return isMatch;
 };
