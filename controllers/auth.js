@@ -319,6 +319,25 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const resetAllPasswords = async (req, res) => {
+  try {
+    const students = await Student.find();
+    students.forEach(async (student) => {
+      student.password = student.lastName;
+      await student.save();
+    });
+
+    res
+      .status(StatusCodes.OK)
+      .json({ success: true, message: "All passwords reset successfully" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
+  }
+}
+
 module.exports = {
   login,
   changePasswordAndSecurityQuestion,
@@ -326,4 +345,5 @@ module.exports = {
   resetPassword,
   registerMultipleStudents,
   deleteStudentLevel,
+  resetAllPasswords
 };
