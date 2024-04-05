@@ -13,7 +13,7 @@ const app = express();
 app.set("trust proxy", 1);
 app.use(rateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 200 // limit each IP to 200 requests per windowMs
 }))
 app.use(express.json());
 app.use(helmet());
@@ -33,6 +33,7 @@ const mcqRouter = require("./routes/mcqs");
 const fitgRouter = require("./routes/fitg");
 const essayqsRouter = require("./routes/essayqs");
 const updateRouter = require("./routes/updatestudentproperties");
+const questionsRouter = require("./routes/questions");
 
 // routes
 app.use('/api/v1/auth', authRouter);
@@ -42,6 +43,7 @@ app.use('/api/v1/mcq', mcqRouter);
 app.use('/api/v1/fitg', fitgRouter);
 app.use('/api/v1/update', updateRouter);
 app.use('/api/v1/essayqs', essayqsRouter);
+app.use('/api/v1/questions', questionsRouter);
 
 
 
