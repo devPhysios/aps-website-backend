@@ -324,6 +324,7 @@ const resetAllPasswords = async (req, res) => {
     const students = await Student.find();
     students.forEach(async (student) => {
       student.password = student.lastName;
+      student.firstLogin = true;
       await student.save();
     });
 

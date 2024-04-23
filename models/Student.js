@@ -37,7 +37,7 @@ const StudentSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ["male", "female"],
+    enum: ["male", "female", "not to say"],
     default: null,
   },
   securityQuestion: {

@@ -35,25 +35,15 @@ const createImage = async (req, res) => {
 
 const getImages = async (req, res) => {
     try {
-        const { page, limit } = req.query;
-
-        // Convert page and limit to numbers
-        const pageNumber = parseInt(page);
-        const limitNumber = parseInt(limit);
-
-        // Calculate the skip value based on the page and limit
-        const skip = (pageNumber - 1) * limitNumber;
-
-        // Fetch all images from the Gallery model with pagination
-        const images = await Gallery.find().skip(skip).limit(limitNumber);
-
+        // Fetch all images from the Gallery model
+        const images = await Gallery.find();
         // Send the images as a response
         res.status(StatusCodes.OK).json({ images });
     } catch (error) {
         // Handle any errors and send an appropriate response
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Something went wrong' });
     }
-};
+}
 
 // Fetch a single image by its ID, imageUrl or title
 const getImage = async (req, res) => {
