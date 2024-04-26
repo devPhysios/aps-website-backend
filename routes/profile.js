@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const verifyToken = require('../middleware/authentication')
+const verifyToken = require("../middleware/authentication");
 
-const { updateStudent, getStudentDetails } = require('../controllers/profile');
+const { updateStudent, getStudentDetails } = require("../controllers/profile");
 
-router.patch("/", verifyToken, updateStudent);
+router.patch("/profile", verifyToken, updateStudent);
 router.route("/:id").get(getStudentDetails);
 
-module.exports = router
+module.exports = router;
