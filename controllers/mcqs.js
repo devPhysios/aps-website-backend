@@ -48,13 +48,12 @@ const createQuestion = async (req, res) => {
     await mcqQuestion.save();
 
     return res.status(StatusCodes.CREATED).json({
-      message: "MCQ question created successfully"
+      message: "MCQ question created successfully",
     });
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: "Internal Server Error" });
-      
   }
 };
 
@@ -83,16 +82,8 @@ const getQuestions = async (req, res) => {
 
 const getCustomQuestions = async (req, res) => {
   try {
-    let {
-      level,
-      courseCode,
-      tags,
-      createdBy,
-      year,
-      _id,
-      page,
-      limit,
-    } = req.query;
+    let { level, courseCode, tags, createdBy, year, _id, page, limit } =
+      req.query;
     page = parseInt(page) || 1;
     limit = parseInt(limit) || 30;
 
@@ -144,7 +135,10 @@ const editQuestion = async (req, res) => {
     if (!student.isAcademicCommittee) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
-        .json({ error: "Unauthorized" });
+        .json({
+          error:
+            "You're not authorized to perform this task. Contact the General Secretary",
+        });
     }
 
     // Find the question by ID
@@ -189,7 +183,7 @@ const editQuestion = async (req, res) => {
     await question.updateOne(question);
     res
       .status(StatusCodes.OK)
-      .json({ message: "Question updated successfully"});
+      .json({ message: "Question updated successfully" });
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -221,21 +215,17 @@ const deleteQuestion = async (req, res) => {
 
     // Check if the student is a member of the academic committee
     if (!student.isAcademicCommittee) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({
-          error:
-            "Unauthorized: Only members of the academic committee can delete questions",
-        });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error:
+          "Unauthorized: Only members of the academic committee can delete questions",
+      });
     }
 
     // Check if the student's level matches the question's level
     if (student.level !== question.level) {
-      return res
-        .status(StatusCodes.FORBIDDEN)
-        .json({
-          error: "Forbidden: Student level does not match question level",
-        });
+      return res.status(StatusCodes.FORBIDDEN).json({
+        error: "Forbidden: Student level does not match question level",
+      });
     }
 
     // Delete the question
