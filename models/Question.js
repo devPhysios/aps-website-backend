@@ -54,6 +54,10 @@ const mcqQuestionSchema = new mongoose.Schema({
     lecturer: {
         type: String,
         required: false
+    },
+    firstLogin: {
+        type: Boolean,
+        default: true
     }
 });
 
