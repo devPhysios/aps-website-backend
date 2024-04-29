@@ -156,13 +156,13 @@ const editQuestion = async (req, res) => {
     }
 
     // Check if the student's level matches the question's level
-    if (student.level !== question.level) {
-      return res
-        .status(StatusCodes.FORBIDDEN)
-        .json({
-          error: "Forbidden: Student level does not match question level",
-        });
-    }
+    // if (student.level !== question.level) {
+    //   return res
+    //     .status(StatusCodes.FORBIDDEN)
+    //     .json({
+    //       error: "Forbidden: Student level does not match question level",
+    //     });
+    // }
 
     // Update the question
     const {
@@ -189,7 +189,7 @@ const editQuestion = async (req, res) => {
     await question.updateOne(question);
     res
       .status(StatusCodes.OK)
-      .json({ message: "Question updated successfully", question });
+      .json({ message: "Question updated successfully"});
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)

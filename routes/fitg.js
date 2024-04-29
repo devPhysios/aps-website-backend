@@ -6,7 +6,7 @@ const verifyToken = require('../middleware/authentication')
 router.post('/createfitg', verifyToken, createQuestion);
 router.get('/getfitg', getQuestions);
 router.get('/getcustomfitg', getCustomQuestions);
-router.patch('/editmfitg', verifyToken, editQuestion)
+router.patch('/editfitg', verifyToken, editQuestion)
 router.delete('/deletefitg', verifyToken, deleteQuestion)
 
 module.exports = router
