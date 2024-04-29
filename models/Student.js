@@ -37,7 +37,7 @@ const StudentSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ["male", "female"],
+    enum: ["male", "female", "not to say"],
     default: null,
   },
   securityQuestion: {
@@ -77,7 +77,7 @@ const StudentSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  set: {
+  classSet: {
     type: String,
     default: null,
     required: [true, "Please enter your set"],
@@ -151,6 +151,7 @@ StudentSchema.methods.comparePassword = async function (password) {
 };
 
 StudentSchema.methods.compareSecurity = async function (securityAnswer) {
+  
   const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);
   return isMatch;
 };

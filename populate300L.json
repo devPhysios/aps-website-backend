@@ -1,6 +1,5 @@
 [
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ce7",
     "firstName": "goodness",
     "lastName": "adeagbo",
@@ -16,7 +15,7 @@
     "matricNumber": "220958",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -27,7 +26,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cea",
     "firstName": "toluwalase",
     "lastName": "adegboye",
@@ -43,7 +41,7 @@
     "matricNumber": "220961",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": ["Senator"],
     "isAlumni": false,
@@ -54,7 +52,6 @@
     "isSenator": true
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ceb",
     "firstName": "isinmi",
     "lastName": "adeniran",
@@ -70,7 +67,7 @@
     "matricNumber": "223829",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -81,7 +78,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cec",
     "firstName": "oluwadamilola",
     "lastName": "adeniran",
@@ -97,7 +93,7 @@
     "matricNumber": "220962",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": ["Assistant General Secretary", "Class Representative"],
     "isAlumni": false,
@@ -108,7 +104,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ced",
     "firstName": "Timothy",
     "lastName": "Adeyemo",
@@ -124,7 +119,7 @@
     "matricNumber": "220698",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -135,7 +130,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ce8",
     "firstName": "olalekan",
     "lastName": "adebayo",
@@ -151,7 +145,7 @@
     "matricNumber": "220959",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -162,7 +156,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61ce9",
     "firstName": "baderin",
     "lastName": "adebobola",
@@ -178,7 +171,7 @@
     "matricNumber": "220960",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": ["Senator"],
     "isAlumni": false,
@@ -189,7 +182,6 @@
     "isSenator": true
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf0",
     "firstName": "abraham",
     "lastName": "ajibade",
@@ -205,7 +197,7 @@
     "matricNumber": "220965",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -216,7 +208,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf1",
     "firstName": "israel",
     "lastName": "akinboyewa",
@@ -232,7 +223,7 @@
     "matricNumber": "220966",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -243,7 +234,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf2",
     "firstName": "oluwasegun",
     "lastName": "akinwola",
@@ -259,7 +249,7 @@
     "matricNumber": "220967",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": ["Sports Secretary"],
     "isAlumni": false,
@@ -270,7 +260,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf3",
     "firstName": "temitope",
     "lastName": "akinyokun",
@@ -286,7 +275,7 @@
     "matricNumber": "223991",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -297,7 +286,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf6",
     "firstName": "joshua",
     "lastName": "fashola",
@@ -313,7 +301,7 @@
     "matricNumber": "220972",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -324,7 +312,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf5",
     "firstName": "joshua",
     "lastName": "ekundayo",
@@ -340,7 +327,7 @@
     "matricNumber": "220971",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -351,7 +338,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf4",
     "firstName": "iyanuoluwa",
     "lastName": "aronimoh",
@@ -367,7 +353,7 @@
     "matricNumber": "220968",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -378,7 +364,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf7",
     "firstName": "alimat",
     "lastName": "idowu",
@@ -394,7 +379,7 @@
     "matricNumber": "220974",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -405,7 +390,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf8",
     "firstName": "ayomide",
     "lastName": "james",
@@ -421,7 +405,7 @@
     "matricNumber": "220975",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -432,7 +416,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cf9",
     "firstName": "ridwan",
     "lastName": "lawal",
@@ -448,7 +431,7 @@
     "matricNumber": "190813",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -459,7 +442,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfa",
     "firstName": "salam",
     "lastName": "moshood",
@@ -475,7 +457,7 @@
     "matricNumber": "220977",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": ["Financial Secretary", "Assistant Class Representative"],
     "isAlumni": false,
@@ -486,7 +468,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfb",
     "firstName": "ogo-oluwa",
     "lastName": "mustapha",
@@ -502,7 +483,7 @@
     "matricNumber": "220978",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": ["Public Relations Officer"],
     "isAlumni": false,
@@ -513,7 +494,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfc",
     "firstName": "cynthia",
     "lastName": "nlemadim",
@@ -529,7 +509,7 @@
     "matricNumber": "220979",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -540,7 +520,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cee",
     "firstName": "aanuoluwapo",
     "lastName": "adeyera",
@@ -556,7 +535,7 @@
     "matricNumber": "220963",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -567,7 +546,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cef",
     "firstName": "victor",
     "lastName": "adeyeye",
@@ -583,7 +561,7 @@
     "matricNumber": "220964",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -594,7 +572,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d01",
     "firstName": "oreoluwa",
     "lastName": "okunola",
@@ -610,7 +587,7 @@
     "matricNumber": "220984",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -621,7 +598,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d00",
     "firstName": "kehinde",
     "lastName": "ogunyele",
@@ -637,7 +613,7 @@
     "matricNumber": "220982",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -648,7 +624,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cff",
     "firstName": "emmanuel",
     "lastName": "ogunsanwo",
@@ -664,7 +639,7 @@
     "matricNumber": "220981",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -675,7 +650,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d02",
     "firstName": "praise",
     "lastName": "osalusi",
@@ -691,7 +665,7 @@
     "matricNumber": "220985",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -702,7 +676,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d06",
     "firstName": "godlives",
     "lastName": "patrick",
@@ -718,7 +691,7 @@
     "matricNumber": "220751",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -729,7 +702,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d04",
     "firstName": "oluwagbemisola",
     "lastName": "oyegunju",
@@ -745,7 +717,7 @@
     "matricNumber": "220987",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": ["Senator"],
     "isAlumni": false,
@@ -756,7 +728,6 @@
     "isSenator": true
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d05",
     "firstName": "favour",
     "lastName": "oyewale",
@@ -772,7 +743,7 @@
     "matricNumber": "220988",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -783,7 +754,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d03",
     "firstName": "kole",
     "lastName": "oso",
@@ -799,7 +769,7 @@
     "matricNumber": "220986",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -810,7 +780,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d07",
     "firstName": "bankole",
     "lastName": "rufus",
@@ -826,7 +795,7 @@
     "matricNumber": "220755",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -837,7 +806,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d09",
     "firstName": "nofiat",
     "lastName": "salaudeen",
@@ -853,7 +821,7 @@
     "matricNumber": "220990",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -864,7 +832,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d08",
     "firstName": "adedoyin",
     "lastName": "salami",
@@ -880,7 +847,7 @@
     "matricNumber": "220989",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -891,7 +858,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61d0a",
     "firstName": "segun",
     "lastName": "sholanke",
@@ -907,7 +873,7 @@
     "matricNumber": "220757",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -918,7 +884,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfe",
     "firstName": "adedamola",
     "lastName": "ogunlela",
@@ -934,7 +899,7 @@
     "matricNumber": "224040",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
@@ -945,7 +910,6 @@
     "isSenator": false
   },
   {
-    "firstLogin": true,
     "_id": "65c136e8ceb21be91da61cfd",
     "firstName": "jacintha",
     "lastName": "nosazeogie",
@@ -961,7 +925,7 @@
     "matricNumber": "220980",
     "program": "Physiotherapy",
     "isAcademicCommittee": false,
-    "set": "2k23",
+    "classSet": "2k23",
     "level": "300",
     "post": [],
     "isAlumni": false,
