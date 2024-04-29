@@ -8,13 +8,17 @@ const createQuestion = async (req, res) => {
     const { matricNumber } = req.student;
 
     //Find the student based on the provided matricNumber
-    const student = await Student.findOne({matricNumber});
+    const student = await Student.findOne({ matricNumber });
     if (!student) {
-      return res.status(StatusCodes.NOT_FOUND).json({ error: "Student not found" });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Student not found" });
     }
     // Check if the student is a member of the academic committee
     if (!student.isAcademicCommittee) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Unauthorized" });
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "Unauthorized" });
     }
 
     const {
@@ -25,7 +29,7 @@ const createQuestion = async (req, res) => {
       level,
       year,
       tags,
-      lecturer
+      lecturer,
     } = req.body;
 
     const essayquestion = new EssayQuestion({
@@ -43,11 +47,13 @@ const createQuestion = async (req, res) => {
     await essayquestion.save();
 
     return res.status(201).json({
-      message: "Question created successfully"
+      message: "Question created successfully",
     });
   } catch (error) {
     console.log(error);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
   }
 };
 
@@ -68,22 +74,16 @@ const getQuestions = async (req, res) => {
       questions,
     });
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
   }
 };
 
 const getCustomQuestions = async (req, res) => {
   try {
-    let {
-      level,
-      courseCode,
-      tags,
-      createdBy,
-      year,
-      _id,
-      page,
-      limit,
-    } = req.query;
+    let { level, courseCode, tags, createdBy, year, _id, page, limit } =
+      req.query;
     page = parseInt(page) || 1;
     limit = parseInt(limit) || 30;
 
@@ -113,92 +113,137 @@ const getCustomQuestions = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ questions });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
   }
 };
 
 const editQuestion = async (req, res) => {
-    try {
-        const { matricNumber } = req.student;
-        const { id } = req.params;
+  try {
+    const { matricNumber } = req.student;
+    const { id } = req.params;
 
-        //Find the student based on the provided matricNumber
-        const student = await Student.findOne({matricNumber});
-        if(!student) return res.status(StatusCodes.NOT_FOUND).json({ error: 'Student not found' });
+    //Find the student based on the provided matricNumber
+    const student = await Student.findOne({ matricNumber });
+    if (!student)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Student not found" });
 
-        // Check if the student is a member of the academic committee
-        if (!student.isAcademicCommittee) {
-            return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorized' });
-        }
-
-        // Find the question by ID
-        const question = await EssayQuestion.findById(id);
-        if (!question) {
-            return res.status(StatusCodes.NOT_FOUND).json({ error: 'Question not found' });
-        }
-
-        // Check if the student's level matches the question's level
-        // if (student.level !== question.level) {
-        //     return res.status(StatusCodes.FORBIDDEN).json({ error: 'Forbidden: Student level does not match question level' });
-        // }
-
-        // Update the question
-        const { question: updatedQuestion, imgURL, answer, courseCode, year, tags, lecturer } = req.body;
-        question.question = updatedQuestion;
-        question.imgURL = imgURL;
-        question.answer = answer;
-        question.courseCode = courseCode;
-        question.year = year;
-        question.tags = tags;
-        question.lecturer = lecturer;
-        question.updatedTimeHistory.push(Date.now());
-        question.updatedStudentHistory.push(student.matricNumber);
-
-        await question.updateOne(question);
-
-        res.status(StatusCodes.OK).json({ message: 'Question updated successfully', question });
-    } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+    // Check if the student is a member of the academic committee
+    if (!student.isAcademicCommittee) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({
+          error:
+            "You're not authorized to perform this task. Kindly contact the General Secretary",
+        });
     }
+
+    // Find the question by ID
+    const question = await EssayQuestion.findById(id);
+    if (!question) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Question not found" });
+    }
+
+    // Check if the student's level matches the question's level
+    // if (student.level !== question.level) {
+    //     return res.status(StatusCodes.FORBIDDEN).json({ error: 'Forbidden: Student level does not match question level' });
+    // }
+
+    // Update the question
+    const {
+      question: updatedQuestion,
+      imgURL,
+      answer,
+      courseCode,
+      year,
+      tags,
+      lecturer,
+    } = req.body;
+    question.question = updatedQuestion;
+    question.imgURL = imgURL;
+    question.answer = answer;
+    question.courseCode = courseCode;
+    question.year = year;
+    question.tags = tags;
+    question.lecturer = lecturer;
+    question.updatedTimeHistory.push(Date.now());
+    question.updatedStudentHistory.push(student.matricNumber);
+
+    await question.updateOne(question);
+
+    res
+      .status(StatusCodes.OK)
+      .json({ message: "Question updated successfully", question });
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
+  }
 };
 
 const deleteQuestion = async (req, res) => {
   try {
-      // Extract relevant information from request
-      const { matricNumber } = req.student;
-      const { id } = req.params;
+    // Extract relevant information from request
+    const { matricNumber } = req.student;
+    const { id } = req.params;
 
-      //Find the student based on the provided matricNumber
-      const student = await Student.findOne({matricNumber});
-      if (!student) {
-          return res.status(StatusCodes.NOT_FOUND).json({ error: 'Student not found' });
-      }
+    //Find the student based on the provided matricNumber
+    const student = await Student.findOne({ matricNumber });
+    if (!student) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Student not found" });
+    }
 
-      // Find the question by ID
-      const question = await EssayQuestion.findById(id);
-      if (!question) {
-          return res.status(StatusCodes.NOT_FOUND).json({ error: 'Question not found' });
-      }
+    // Find the question by ID
+    const question = await EssayQuestion.findById(id);
+    if (!question) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Question not found" });
+    }
 
-      // Check if the student is a member of the academic committee
-      if (!student.isAcademicCommittee) {
-          return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorized: Only members of the academic committee can delete questions' });
-      }
+    // Check if the student is a member of the academic committee
+    if (!student.isAcademicCommittee) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({
+          error:
+            "Unauthorized: Only members of the academic committee can delete questions",
+        });
+    }
 
-      // Check if the student's level matches the question's level
-      if (student.level !== question.level) {
-          return res.status(StatusCodes.FORBIDDEN).json({ error: 'Forbidden: Student level does not match question level' });
-      }
+    // Check if the student's level matches the question's level
+    // if (student.level !== question.level) {
+    //   return res
+    //     .status(StatusCodes.FORBIDDEN)
+    //     .json({
+    //       error: "Forbidden: Student level does not match question level",
+    //     });
+    // }
 
-      // Delete the question
-      await question.delete();
+    // Delete the question
+    await question.delete();
 
-      res.status(StatusCodes.OK).json({ message: 'Question deleted successfully' });
+    res
+      .status(StatusCodes.OK)
+      .json({ message: "Question deleted successfully" });
   } catch (error) {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
   }
 };
 
-
-
-module.exports = { createQuestion, getQuestions, getCustomQuestions, editQuestion, deleteQuestion };
+module.exports = {
+  createQuestion,
+  getQuestions,
+  getCustomQuestions,
+  editQuestion,
+  deleteQuestion,
+};

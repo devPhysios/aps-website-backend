@@ -187,9 +187,9 @@ const deleteQuestion = async (req, res) => {
       }
 
       // Check if the student's level matches the question's level
-      if (student.level !== question.level) {
-          return res.status(StatusCodes.FORBIDDEN).json({ error: 'Forbidden: Student level does not match question level' });
-      }
+      // if (student.level !== question.level) {
+      //     return res.status(StatusCodes.FORBIDDEN).json({ error: 'Forbidden: Student level does not match question level' });
+      // }
 
       // Delete the question
       await question.delete();
