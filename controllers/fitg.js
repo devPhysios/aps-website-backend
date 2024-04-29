@@ -192,7 +192,7 @@ const deleteQuestion = async (req, res) => {
       // }
 
       // Delete the question
-      await question.delete();
+      await question.deleteOne();
 
       res.status(StatusCodes.OK).json({ message: 'Question deleted successfully' });
   } catch (error) {

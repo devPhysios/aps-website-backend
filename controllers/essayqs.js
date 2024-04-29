@@ -133,12 +133,10 @@ const editQuestion = async (req, res) => {
 
     // Check if the student is a member of the academic committee
     if (!student.isAcademicCommittee) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({
-          error:
-            "You're not authorized to perform this task. Kindly contact the General Secretary",
-        });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error:
+          "You're not authorized to perform this task. Kindly contact the General Secretary",
+      });
     }
 
     // Find the question by ID
@@ -210,12 +208,10 @@ const deleteQuestion = async (req, res) => {
 
     // Check if the student is a member of the academic committee
     if (!student.isAcademicCommittee) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({
-          error:
-            "Unauthorized: Only members of the academic committee can delete questions",
-        });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error:
+          "Unauthorized: Only members of the academic committee can delete questions",
+      });
     }
 
     // Check if the student's level matches the question's level
@@ -228,7 +224,7 @@ const deleteQuestion = async (req, res) => {
     // }
 
     // Delete the question
-    await question.delete();
+    await question.deleteOne();
 
     res
       .status(StatusCodes.OK)
