@@ -5,6 +5,8 @@ const { StatusCodes } = require("http-status-codes");
 const updateStudent = async (req, res) => {
   const { matricNumber } = req.student
 
+  const { monthOfBirth, dayOfBirth, hobbies, email, gender, hallOfResidence, roomNo } = req.body
+
   try {
     const studentToUpdate = await Student.findOne({ matricNumber });
 
@@ -14,9 +16,9 @@ const updateStudent = async (req, res) => {
 
     const student = await Student.findOneAndUpdate(
       studentToUpdate,
-      { ...req.body },
+      { monthOfBirth, dayOfBirth, hobbies, email, gender, hallOfResidence, roomNo },
       { new: true }
-    );
+    ).select("-password -securityQuestion -securityAnswer");
 
     res.status(StatusCodes.OK).json({
       student
