@@ -140,7 +140,8 @@ const login = async (req, res) => {
         isAcademicCommittee: student.isAcademicCommittee,
         isSenator: student.isSenator,
         classSet: student.classSet,
-        program: student.program
+        program: student.program,
+        hobbies: student.hobbies,
       };
     }
 
