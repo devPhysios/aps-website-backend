@@ -37,7 +37,7 @@ const StudentSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ["male", "female", "not to say"],
+    enum: ["male", "female"],
     default: null,
   },
   securityQuestion: {
@@ -123,6 +123,10 @@ const StudentSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  hobbies: {
+    type: String,
+    default: null,
+  },
 });
 
 StudentSchema.pre("save", async function (next) {
@@ -133,7 +137,6 @@ StudentSchema.pre("save", async function (next) {
   }
   next();
 });
-
 
 StudentSchema.methods.createJWT = function () {
   return jwt.sign(
@@ -151,10 +154,8 @@ StudentSchema.methods.comparePassword = async function (password) {
 };
 
 StudentSchema.methods.compareSecurity = async function (securityAnswer) {
-  
   const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);
   return isMatch;
 };
-
 
 module.exports = mongoose.model("Student", StudentSchema);
