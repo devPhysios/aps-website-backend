@@ -1,6 +1,6 @@
 const Student = require("../models/Student");
 const { StatusCodes } = require("http-status-codes");
-const { MCQQuestion } = require("../models/Question"); // Assuming the model file is in the '../models' directory
+const { MCQQuestion } = require("../models/Question");
 
 const createQuestion = async (req, res) => {
   try {

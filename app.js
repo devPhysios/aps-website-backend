@@ -23,8 +23,6 @@ app.use(xss());
 //connect to db
 const connectDB = require("./db/connnect");
 
-// const authenticateStudent = require('./middleware/authentication'); //this is used for accessing protected routes like dashboard
-
 // routers
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
@@ -51,7 +49,7 @@ const port = process.env.PORT || 8800;
 
 const startConnection = async () => {
   try {
-    const isConnectionSuccessful = await connectDB(process.env.MONGO_URI); // Wait for the connection to complete
+    const isConnectionSuccessful = await connectDB(process.env.MONGO_URI);
 
     if (isConnectionSuccessful) {
       app.listen(
