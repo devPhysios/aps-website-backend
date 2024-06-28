@@ -9,6 +9,26 @@ const rateLimiter = require("express-rate-limit");
 const express = require("express");
 const app = express();
 
+// Debug middleware to check CORS is applied
+app.use((req, res, next) => {
+  console.log('Applying CORS headers');
+  next();
+});
+
+app.use(cors({
+  origin: 'https://www.apsui.com', // Replace with your frontend URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  allowedHeaders: '*', // Allow all headers
+  exposedHeaders: '*', // Expose all headers
+  credentials: true, // Allow credentials
+  maxAge: 86400, // Cache preflight response for 24 hours
+  optionsSuccessStatus: 200, // Return 200 for successful OPTIONS requests
+  preflightContinue: false // Do not pass the CORS preflight response to the next handler
+}));
+
+// Ensure that preflight requests are handled
+app.options('*', cors());
+
 app.set("trust proxy", 1);
 app.use(
   rateLimiter({
@@ -18,16 +38,7 @@ app.use(
 );
 app.use(express.json());
 app.use(helmet());
-app.use(cors({
-  origin: 'https://www.apsui.com',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: '*',
-  exposedHeaders: '*',
-  credentials: true,
-  maxAge: 86400,
-  optionsSuccessStatus: 200,
-  preflightContinue: false
-}));
+
 app.use(expressSanitizer());
 
 //connect to db
