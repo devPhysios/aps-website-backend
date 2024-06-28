@@ -4,7 +4,7 @@ const fs = require("fs");
 const capitalize = (word) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 // const register = async (req, res) => {
@@ -78,7 +78,6 @@ const deleteStudentLevel = async (req, res) => {
   }
 };
 
-
 const login = async (req, res) => {
   try {
     const { matricNumber, password } = req.body;
@@ -96,9 +95,7 @@ const login = async (req, res) => {
         .status(StatusCodes.NOT_FOUND)
         .json({ success: false, error: "Student not found." });
     }
-
     const isPasswordCorrect = await student.comparePassword(password);
-
     if (!isPasswordCorrect) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -119,7 +116,7 @@ const login = async (req, res) => {
         fullName: `${capitalize(student.firstName)} ${
           student.middleName ? capitalize(student.middleName) + " " : ""
         }${capitalize(student.lastName)}`,
-        isAcademicCommittee: student.isAcademicCommittee
+        isAcademicCommittee: student.isAcademicCommittee,
       };
     } else {
       responseData.student = {
@@ -160,12 +157,8 @@ const login = async (req, res) => {
 
 const changePasswordAndSecurityQuestion = async (req, res) => {
   try {
-    const {
-      oldPassword,
-      newPassword,
-      securityQuestion,
-      securityAnswer,
-    } = req.body;
+    const { oldPassword, newPassword, securityQuestion, securityAnswer } =
+      req.body;
     const { matricNumber } = req.student;
 
     // Check if all required fields are provided
@@ -272,7 +265,9 @@ const resetPassword = async (req, res) => {
     }
 
     // Find the student based on the provided matricNumber
-    const student = await Student.findOne({ matricNumber }).select('+securityAnswer');
+    const student = await Student.findOne({ matricNumber }).select(
+      "+securityAnswer"
+    );
     if (!student) {
       return res
         .status(StatusCodes.NOT_FOUND)
@@ -308,13 +303,11 @@ const resetPassword = async (req, res) => {
     await student.save();
 
     // Respond with success message
-    res
-      .status(StatusCodes.OK)
-      .json({
-        success: true,
-        message:
-          "Password reset successfully. Your surname is now your password. Please update it. Thanks",
-      });
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message:
+        "Password reset successfully. Your surname is now your password. Please update it. Thanks",
+    });
   } catch (error) {
     console.error(error);
     res
@@ -328,6 +321,8 @@ const resetAllPasswords = async (req, res) => {
     const students = await Student.find();
     students.forEach(async (student) => {
       student.password = student.lastName;
+      student.securityAnswer = null;
+      student.securityQuestion = null;
       student.firstLogin = true;
       await student.save();
     });
@@ -341,28 +336,41 @@ const resetAllPasswords = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: error.message });
   }
-}
+};
 
 const validToken = async (req, res) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Not authorized to access this route' });
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ error: "Not authorized to access this route" });
   }
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(" ")[1];
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const matricNumber = payload.matricNumber
-    const student = await Student.findOne({ matricNumber })
+    const matricNumber = payload.matricNumber;
+    console.log(matricNumber);
+    const student = await Student.findOne({ matricNumber });
     if (!student) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Invalid or expired token' });
+      console.log("student not found");
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "Invalid or expired token" });
     }
     const isTokenValid = await bcrypt.compare(token, student.validToken);
     if (!isTokenValid) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Invalid or expired token' });
+      console.log("token not valid");
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "Invalid or expired token" });
     }
-    return res.status(StatusCodes.OK).json({ success: true, message: 'Token is valid' });
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, message: "Token is valid" });
   } catch (error) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Invalid or expired token' });
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ error: "Invalid or expired token" });
   }
 };
 
@@ -374,5 +382,5 @@ module.exports = {
   registerMultipleStudents,
   deleteStudentLevel,
   resetAllPasswords,
-  validToken
+  validToken,
 };
