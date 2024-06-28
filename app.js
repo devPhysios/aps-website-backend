@@ -17,28 +17,35 @@ app.use(
   })
 );
 
-const allowedOrigins = ['https://www.apsui.com', 'http://localhost:5173'];
+const allowedOrigins = [
+  "https://www.apsui.com",
+  "http://localhost:5173",
+  "www.apsui.com",
+  "localhost:5173",
+];
 
-app.use(cors({
+app.use(
+  cors({
     origin: function (origin, callback) {
-    // Check if the origin is in the allowedOrigins array or if it's undefined (for server-to-server requests without origin header)
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: '*', // Allow all headers
-  exposedHeaders: '*', // Expose all headers
-  credentials: true, // Allow credentials
-  maxAge: 86400, // Cache preflight response for 24 hours
-  optionsSuccessStatus: 200, // Return 200 for successful OPTIONS requests
-  preflightContinue: false // Do not pass the CORS preflight response to the next handler
-}));
+      // Check if the origin is in the allowedOrigins array or if it's undefined (for server-to-server requests without origin header)
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    allowedHeaders: "*", // Allow all headers
+    exposedHeaders: "*", // Expose all headers
+    credentials: true, // Allow credentials
+    maxAge: 86400, // Cache preflight response for 24 hours
+    optionsSuccessStatus: 200, // Return 200 for successful OPTIONS requests
+    preflightContinue: false, // Do not pass the CORS preflight response to the next handler
+  })
+);
 
 // Ensure that preflight requests are handled
-app.options('*', cors());
+app.options("*", cors());
 
 app.use(express.json());
 app.use(helmet());
