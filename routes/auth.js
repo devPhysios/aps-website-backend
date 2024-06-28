@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { login, changePassword, resetPassword, changePasswordAndSecurityQuestion, registerMultipleStudents, deleteStudentLevel, resetAllPasswords } = require('../controllers/auth');
+const { login, changePassword, resetPassword, changePasswordAndSecurityQuestion, registerMultipleStudents, deleteStudentLevel, resetAllPasswords, validToken } = require('../controllers/auth');
 const verifyToken = require('../middleware/authentication')
 // router.post('/register', register)
 router.post('/login', login);
@@ -10,6 +10,7 @@ router.post('/cpasq', verifyToken, changePasswordAndSecurityQuestion);
 router.post('/resetAllPasswords', resetAllPasswords);
 // router.get('/getStudents', fetchAndStoreStudents)
 router.post('/populate', registerMultipleStudents);
-router.delete('/deleteLevel', deleteStudentLevel)
+router.post('/checkToken', validToken);
+router.delete('/deleteLevel', deleteStudentLevel);
 
 module.exports = router

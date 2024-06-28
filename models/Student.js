@@ -139,6 +139,10 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+   validToken: {
+    type: String,
+    default: null,
+  }
 });
 
 StudentSchema.pre("save", async function (next) {
@@ -150,14 +154,16 @@ StudentSchema.pre("save", async function (next) {
   next();
 });
 
-StudentSchema.methods.createJWT = function () {
-  return jwt.sign(
+StudentSchema.methods.createJWT = async function () {
+  const token = jwt.sign(
     { studentId: this._id, matricNumber: this.matricNumber },
     process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_LIFETIME,
-    }
+    { expiresIn: process.env.JWT_LIFETIME }
   );
+  const salt = await bcrypt.genSalt(10);
+  this.validToken = await bcrypt.hash(token, salt);
+  await this.save();
+  return token;
 };
 
 StudentSchema.methods.comparePassword = async function (password) {

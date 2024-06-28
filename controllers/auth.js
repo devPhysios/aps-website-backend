@@ -4,6 +4,9 @@ const fs = require("fs");
 const capitalize = (word) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
+
 // const register = async (req, res) => {
 //   const student = await Student.create({ ...req.body });
 //   const token = student.createJWT();
@@ -340,6 +343,29 @@ const resetAllPasswords = async (req, res) => {
   }
 }
 
+const validToken = async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Not authorized to access this route' });
+  }
+  const token = authHeader.split(' ')[1];
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const matricNumber = payload.matricNumber
+    const student = await Student.findOne({ matricNumber })
+    if (!student) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Invalid or expired token' });
+    }
+    const isTokenValid = await bcrypt.compare(token, student.validToken);
+    if (!isTokenValid) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Invalid or expired token' });
+    }
+    return res.status(StatusCodes.OK).json({ success: true, message: 'Token is valid' });
+  } catch (error) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Invalid or expired token' });
+  }
+};
+
 module.exports = {
   login,
   changePasswordAndSecurityQuestion,
@@ -347,5 +373,6 @@ module.exports = {
   resetPassword,
   registerMultipleStudents,
   deleteStudentLevel,
-  resetAllPasswords
+  resetAllPasswords,
+  validToken
 };
