@@ -18,7 +18,16 @@ app.use(
 );
 app.use(express.json());
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: 'https://www.apsui.com',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  allowedHeaders: '*',
+  exposedHeaders: '*',
+  credentials: true,
+  maxAge: 86400,
+  optionsSuccessStatus: 200,
+  preflightContinue: false
+}));
 app.use(expressSanitizer());
 
 //connect to db
