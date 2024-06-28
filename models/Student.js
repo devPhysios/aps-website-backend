@@ -52,21 +52,7 @@ const StudentSchema = new mongoose.Schema({
   },
   monthOfBirth: {
     type: String,
-    default: null,
-    enum: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
+    default: null
   },
   dayOfBirth: {
     type: Number,
