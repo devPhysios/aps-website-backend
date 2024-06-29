@@ -8,7 +8,7 @@ const capitalize = (word) => {
 const getStudentDetails = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = [213569, 220973];
+    const allowedMatricNumbers = ['213569', '220978'];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -48,7 +48,7 @@ const getStudentDetails = async (req, res) => {
 const createStudentBirthday = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = [213569, 220973];
+    const allowedMatricNumbers = ['213569', '220978'];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -115,7 +115,7 @@ const createStudentBirthday = async (req, res) => {
 const updateStudentBirthday = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = [213569, 220973];
+    const allowedMatricNumbers = ['213569', '220978'];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -213,10 +213,11 @@ const getStudentBirthdays = async (req, res) => {
 const getAllBirthdayEvents = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    if (!authMatricNumber || authMatricNumber !== "213569") {
+    const allowedMatricNumbers = ['213569', '220978'];
+    if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
-        .json({ error: "You're not authorized to perform this action" });
+        .json({ error: "You're not permitted to perform this action" });
     }
 
     const birthdays = await Birthday.find();
@@ -238,7 +239,7 @@ const getAllBirthdayEvents = async (req, res) => {
 const deleteStudentBirthday = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = ['213569', '220973'];
+    const allowedMatricNumbers = ['213569', '220978'];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
