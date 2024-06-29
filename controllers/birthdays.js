@@ -8,7 +8,8 @@ const capitalize = (word) => {
 const getStudentDetails = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = ['213569', '220978'];
+    console.log("220978");
+    const allowedMatricNumbers = ["213569", "220978"];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -48,7 +49,7 @@ const getStudentDetails = async (req, res) => {
 const createStudentBirthday = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = ['213569', '220978'];
+    const allowedMatricNumbers = ["213569", "220978"];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -97,13 +98,11 @@ const createStudentBirthday = async (req, res) => {
       classSet,
       imageUrl,
     });
-    return res
-      .status(StatusCodes.CREATED)
-      .json({
-        message: "Birthday created successfully",
-        success: true,
-        birthday,
-      });
+    return res.status(StatusCodes.CREATED).json({
+      message: "Birthday created successfully",
+      success: true,
+      birthday,
+    });
   } catch (error) {
     console.log(error);
     return res
@@ -115,7 +114,7 @@ const createStudentBirthday = async (req, res) => {
 const updateStudentBirthday = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = ['213569', '220978'];
+    const allowedMatricNumbers = ["213569", "220978"];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -167,13 +166,11 @@ const updateStudentBirthday = async (req, res) => {
       },
       { new: true }
     );
-    return res
-      .status(StatusCodes.OK)
-      .json({
-        message: "Birthday updated successfully",
-        success: true,
-        birthday,
-      });
+    return res.status(StatusCodes.OK).json({
+      message: "Birthday updated successfully",
+      success: true,
+      birthday,
+    });
   } catch (error) {
     console.log(error);
     return res
@@ -213,7 +210,7 @@ const getStudentBirthdays = async (req, res) => {
 const getAllBirthdayEvents = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = ['213569', '220978'];
+    const allowedMatricNumbers = ["213569", "220978"];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -239,7 +236,7 @@ const getAllBirthdayEvents = async (req, res) => {
 const deleteStudentBirthday = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    const allowedMatricNumbers = ['213569', '220978'];
+    const allowedMatricNumbers = ["213569", "220978"];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
