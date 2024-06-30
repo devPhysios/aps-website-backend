@@ -207,6 +207,36 @@ const getStudentBirthdays = async (req, res) => {
   }
 };
 
+const getBirthdaysByMonth = async (req, res) => {
+  try {
+    const { month } = req.params;
+    if (!month) { return res.status(400).json({ message: "Please provide a month" }); }
+    const capitalizedMonth = capitalize(month);
+    const students = await Student.find({ monthOfBirth: capitalizedMonth });
+    const birthdayStudents = students.map((student) => ({
+      fullName: `${capitalize(student.firstName)} ${capitalize(student.middleName)} ${capitalize(student.lastName)}`,
+      matricNumber: student.matricNumber,
+      monthOfBirth: student.monthOfBirth,
+      dayOfBirth: student.dayOfBirth,
+      level: student.level,
+    }));
+
+    // Send the response and total number of students
+    return res.status(200).json({
+      message: `${birthdayStudents.length} students found`,
+      students: birthdayStudents,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "An error occurred while retrieving students' birthdays.",
+      });
+  }
+};
+
 const getAllBirthdayEvents = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
@@ -283,4 +313,5 @@ module.exports = {
   getStudentBirthdays,
   getAllBirthdayEvents,
   deleteStudentBirthday,
+  getBirthdaysByMonth,
 };

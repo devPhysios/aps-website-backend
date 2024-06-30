@@ -125,7 +125,11 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  validToken: {
+  skills: {
+    type: Array,
+    default: null,
+  },
+  phoneNumber: {
     type: String,
     default: null,
   }

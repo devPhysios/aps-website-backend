@@ -374,6 +374,46 @@ const validToken = async (req, res) => {
   }
 };
 
+const updateStudentProfiles = async (req, res) => {
+  try {
+      // Read profile.json file
+      const studentsProfile = require('../profile.json'); // Ensure the path is correct
+
+      let updatedCount = 0;
+      const updatedMatricNumbers = [];
+      const notUpdatedMatricNumbers = [];
+
+      for (const studentData of studentsProfile) {
+          const { matriculationNumber, ...updateFields } = studentData;
+
+          // Find the student by matric number and update their data
+          const result = await Student.findOneAndUpdate(
+              { matricNumber: matriculationNumber },
+              { $set: updateFields },
+              { new: true, runValidators: true }
+          );
+
+          if (result) {
+              updatedCount++;
+              updatedMatricNumbers.push(matriculationNumber);
+          } else {
+              notUpdatedMatricNumbers.push(matriculationNumber);
+          }
+      }
+
+      // Send the response
+      res.status(200).json({
+          message: `${updatedCount} student profiles updated successfully.`,
+          updatedMatricNumbers,
+          notUpdatedCount: notUpdatedMatricNumbers.length,
+          notUpdatedMatricNumbers
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'An error occurred while updating student profiles.' });
+  }
+};
+
 module.exports = {
   login,
   changePasswordAndSecurityQuestion,
@@ -383,4 +423,5 @@ module.exports = {
   deleteStudentLevel,
   resetAllPasswords,
   validToken,
+  updateStudentProfiles
 };
