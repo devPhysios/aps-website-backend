@@ -142,6 +142,8 @@ const login = async (req, res) => {
         classSet: student.classSet,
         program: student.program,
         hobbies: student.hobbies,
+        phoneNumber: student.phoneNumber,
+        skills: student.skills
       };
     }
 
