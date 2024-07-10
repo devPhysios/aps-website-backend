@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const StudentSchema = new mongoose.Schema({
+const AlumnusSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: [true, "Please enter your first name"],
@@ -52,7 +52,7 @@ const StudentSchema = new mongoose.Schema({
   },
   monthOfBirth: {
     type: String,
-    default: null
+    default: null,
   },
   dayOfBirth: {
     type: Number,
@@ -71,25 +71,16 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     default: "Physiotherapy",
   },
-  isAcademicCommittee: {
-    type: Boolean,
-    default: false,
-  },
   classSet: {
     type: String,
     default: null,
     required: [true, "Please enter your set"],
   },
-  level: {
-    type: String,
-    enum: ["100", "200", "300", "400", "500"],
-    required: [true, "Please enter your level"],
-  },
-  post: {
+  postHeld: {
     type: Array,
     default: null,
   },
-  isExecutive: {
+  isPastExecutive: {
     type: Boolean,
     default: false,
   },
@@ -97,19 +88,7 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  hallOfResidence: {
-    type: String,
-    default: null,
-  },
-  roomNo: {
-    type: String,
-    default: null,
-  },
-  isAcademicCommittee: {
-    type: Boolean,
-    default: false,
-  },
-  isSenator: {
+  isPastSenator: {
     type: Boolean,
     default: false,
   },
@@ -128,38 +107,37 @@ const StudentSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     default: null,
-  }
+  },
 });
 
-StudentSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  if (this.securityAnswer) {
-    this.securityAnswer = await bcrypt.hash(this.securityAnswer, salt);
-  }
-  next();
-});
-
-StudentSchema.methods.createJWT = function () {
-  return jwt.sign(
-    { studentId: this._id, matricNumber: this.matricNumber },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_LIFETIME,
+AlumnusSchema.pre("save", async function (next) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = bcrypt.hash(this.password, salt);
+    if (this.securityAnswer) {
+      this.securityAnswer = await bcrypt.hash(this.securityAnswer, salt);
     }
-  );
-};
-
-StudentSchema.methods.comparePassword = async function (password) {
-  const isMatch = await bcrypt.compare(password, this.password);
-  return isMatch;
-};
-
-
-
-StudentSchema.methods.compareSecurity = async function (securityAnswer) {
-  const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);
-  return isMatch;
-};
-
-module.exports = mongoose.model("Student", StudentSchema);
+    next();
+  });
+  
+  AlumnusSchema.methods.createJWT = function () {
+    return jwt.sign(
+      { alumnusId: this._id, matricNumber: this.matricNumber },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_LIFETIME,
+      }
+    );
+  };
+  
+  AlumnusSchema.methods.comparePassword = async function (password) {
+    const isMatch = await bcrypt.compare(password, this.password);
+    return isMatch;
+  };
+  
+  AlumnusSchema.methods.compareSecurity = async function (securityAnswer) {
+    const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);
+    return isMatch;
+  };
+  
+  module.exports = mongoose.model("Alumnus", AlumnusSchema);
+  
