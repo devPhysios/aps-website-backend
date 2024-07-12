@@ -202,7 +202,7 @@ const resetPasswordsToLastName = async (req, res) => {
   //     student.firstLogin = true;
   //     await student.save({ session });
   //     const updatedStudent = await Student.findById(student._id).session(session);
-  //     console.log(`Password for ${student.matricNumber} (${student.lastName}) reset and re-hashed value: ${updatedStudent.password}`);
+  //     // console.log(`Password for ${student.matricNumber} (${student.lastName}) reset and re-hashed value: ${updatedStudent.password}`);
   //   }
 
   //   await session.commitTransaction();

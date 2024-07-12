@@ -91,71 +91,78 @@ const login = async (req, res) => {
     const student = await Student.findOne({ matricNumber });
 
     if (!student) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ success: false, error: "Student not found." });
+      return res.status(StatusCodes.NOT_FOUND).json({
+        success: false,
+        error: "Student not found.",
+      });
     }
+
     const isPasswordCorrect = await student.comparePassword(password);
     if (!isPasswordCorrect) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({ success: false, error: "Incorrect password." });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        success: false,
+        error: "Incorrect password.",
+      });
     }
 
     const token = student.createJWT();
+    student.forceLogout = false;
+ 
+    await student.save();
 
-    let responseData = {
-      token,
+    const updatedStudent = await Student.findOne({ matricNumber });
+    const baseStudentData = {
+      id: student._id,
+      matricNumber: student.matricNumber,
+      firstLogin: student.firstLogin,
+      isAcademicCommittee: student.isAcademicCommittee,
     };
 
-    if (student.firstLogin) {
-      responseData.student = {
-        id: student._id,
-        firstLogin: student.firstLogin,
-        matricNumber: student.matricNumber,
-        fullName: `${capitalize(student.firstName)} ${
-          student.middleName ? capitalize(student.middleName) + " " : ""
-        }${capitalize(student.lastName)}`,
-        isAcademicCommittee: student.isAcademicCommittee,
-      };
-    } else {
-      responseData.student = {
-        firstLogin: student.firstLogin,
-        id: student._id,
-        matricNumber: student.matricNumber,
-        firstName: student.firstName,
-        lastName: student.lastName,
-        middleName: student.middleName,
-        email: student.email,
-        gender: student.gender,
-        monthOfBirth: student.monthOfBirth,
-        dayOfBirth: student.dayOfBirth,
-        level: student.level,
-        post: student.post,
-        isAlumni: student.isAlumni,
-        isExecutive: student.isExecutive,
-        profilePicture: student.profilePicture,
-        hallOfResidence: student.hallOfResidence,
-        roomNo: student.roomNo,
-        isAcademicCommittee: student.isAcademicCommittee,
-        isSenator: student.isSenator,
-        classSet: student.classSet,
-        program: student.program,
-        hobbies: student.hobbies,
-        phoneNumber: student.phoneNumber,
-        skills: student.skills
-      };
-    }
+    const extendedStudentData = student.firstLogin
+      ? {
+          fullName: `${capitalize(student.firstName)} ${
+            student.middleName ? capitalize(student.middleName) + " " : ""
+          }${capitalize(student.lastName)}`,
+        }
+      : {
+          firstName: student.firstName,
+          lastName: student.lastName,
+          middleName: student.middleName,
+          email: student.email,
+          gender: student.gender,
+          monthOfBirth: student.monthOfBirth,
+          dayOfBirth: student.dayOfBirth,
+          level: student.level,
+          post: student.post,
+          isAlumni: student.isAlumni,
+          isExecutive: student.isExecutive,
+          profilePicture: student.profilePicture,
+          hallOfResidence: student.hallOfResidence,
+          roomNo: student.roomNo,
+          isSenator: student.isSenator,
+          classSet: student.classSet,
+          program: student.program,
+          hobbies: student.hobbies,
+          phoneNumber: student.phoneNumber,
+          skills: student.skills,
+        };
+
+    const responseData = {
+      token,
+      student: { ...baseStudentData, ...extendedStudentData },
+    };
 
     res.status(StatusCodes.OK).json({ responseData, success: true });
   } catch (error) {
-    // Handle errors
     console.error(error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: error.message, success: false });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: error.message,
+      success: false,
+    });
   }
 };
+
+
 
 const changePasswordAndSecurityQuestion = async (req, res) => {
   try {
@@ -378,43 +385,69 @@ const validToken = async (req, res) => {
 
 const updateStudentProfiles = async (req, res) => {
   try {
-      // Read profile.json file
-      const studentsProfile = require('../profile.json'); // Ensure the path is correct
+    // Read profile.json file
+    const studentsProfile = require("../profile.json"); // Ensure the path is correct
 
-      let updatedCount = 0;
-      const updatedMatricNumbers = [];
-      const notUpdatedMatricNumbers = [];
+    let updatedCount = 0;
+    const updatedMatricNumbers = [];
+    const notUpdatedMatricNumbers = [];
 
-      for (const studentData of studentsProfile) {
-          const { matriculationNumber, ...updateFields } = studentData;
+    for (const studentData of studentsProfile) {
+      const { matriculationNumber, ...updateFields } = studentData;
 
-          // Find the student by matric number and update their data
-          const result = await Student.findOneAndUpdate(
-              { matricNumber: matriculationNumber },
-              { $set: updateFields },
-              { new: true, runValidators: true }
-          );
+      // Find the student by matric number and update their data
+      const result = await Student.findOneAndUpdate(
+        { matricNumber: matriculationNumber },
+        { $set: updateFields },
+        { new: true, runValidators: true }
+      );
 
-          if (result) {
-              updatedCount++;
-              updatedMatricNumbers.push(matriculationNumber);
-          } else {
-              notUpdatedMatricNumbers.push(matriculationNumber);
-          }
+      if (result) {
+        updatedCount++;
+        updatedMatricNumbers.push(matriculationNumber);
+      } else {
+        notUpdatedMatricNumbers.push(matriculationNumber);
       }
+    }
 
-      // Send the response
-      res.status(200).json({
-          message: `${updatedCount} student profiles updated successfully.`,
-          updatedMatricNumbers,
-          notUpdatedCount: notUpdatedMatricNumbers.length,
-          notUpdatedMatricNumbers
-      });
+    // Send the response
+    res.status(200).json({
+      message: `${updatedCount} student profiles updated successfully.`,
+      updatedMatricNumbers,
+      notUpdatedCount: notUpdatedMatricNumbers.length,
+      notUpdatedMatricNumbers,
+    });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'An error occurred while updating student profiles.' });
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while updating student profiles." });
   }
 };
+
+// check if student should be logged out
+const checkForceLogOut = async (req, res) => {
+  try {
+    const { matricNumber } = req.student;
+    const student = await Student.findOne({ matricNumber });
+    if (!student) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ success: false, error: "Student not found" });
+    }
+    if (student.forceLogout === false) {
+      return res.status(StatusCodes.OK).json({ success: true, forceLogout: false });
+    } else {
+      return res.status(StatusCodes.OK).json({ success: true, forceLogout: true });
+    }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
+  }
+};
+
 
 module.exports = {
   login,
@@ -425,5 +458,6 @@ module.exports = {
   deleteStudentLevel,
   resetAllPasswords,
   validToken,
-  updateStudentProfiles
+  updateStudentProfiles,
+  checkForceLogOut,
 };

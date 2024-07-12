@@ -128,12 +128,16 @@ const StudentSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     default: null,
+  },
+  forceLogout: {
+    type: Boolean,
+    default: true
   }
 });
 
 StudentSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
-    console.log("Password is modified");
+    // console.log("Password is modified");
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
   }

@@ -108,36 +108,57 @@ const AlumnusSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  forceLogout: {
+    type: Boolean,
+    default: true
+  }
 });
 
 AlumnusSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    console.log("Password is modified");
     const salt = await bcrypt.genSalt(10);
-    this.password = bcrypt.hash(this.password, salt);
-    if (this.securityAnswer) {
-      this.securityAnswer = await bcrypt.hash(this.securityAnswer, salt);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+  if (this.isModified("securityAnswer")) {
+    const salt = await bcrypt.genSalt(10);
+    this.securityAnswer = await bcrypt.hash(this.securityAnswer, salt);
+  }
+  next();
+});
+
+AlumnusSchema.pre("findOneAndUpdate", async function (next) {
+  if (this.getUpdate().password) {
+    const salt = await bcrypt.genSalt(10);
+    this.getUpdate().password = await bcrypt.hash(this.getUpdate().password, salt);
+  }
+  if (this.getUpdate().securityAnswer) {
+    const salt = await bcrypt.genSalt(10);
+    this.getUpdate().securityAnswer = await bcrypt.hash(this.getUpdate().securityAnswer, salt);
+  }
+  next();
+});
+
+AlumnusSchema.methods.createJWT = function () {
+  return jwt.sign(
+    { alumnusId: this._id, matricNumber: this.matricNumber },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
     }
-    next();
-  });
-  
-  AlumnusSchema.methods.createJWT = function () {
-    return jwt.sign(
-      { alumnusId: this._id, matricNumber: this.matricNumber },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.JWT_LIFETIME,
-      }
-    );
-  };
-  
-  AlumnusSchema.methods.comparePassword = async function (password) {
-    const isMatch = await bcrypt.compare(password, this.password);
-    return isMatch;
-  };
-  
-  AlumnusSchema.methods.compareSecurity = async function (securityAnswer) {
-    const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);
-    return isMatch;
-  };
+  );
+};
+
+AlumnusSchema.methods.comparePassword = async function (password) {
+  const isMatch = await bcrypt.compare(password, this.password);
+  return isMatch;
+};
+
+AlumnusSchema.methods.compareSecurity = async function (securityAnswer) {
+  const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);
+  return isMatch;
+};
+
   
   module.exports = mongoose.model("Alumnus", AlumnusSchema);
   
