@@ -107,7 +107,7 @@ const login = async (req, res) => {
 
     const token = student.createJWT();
     student.forceLogout = false;
- 
+
     await student.save();
 
     const updatedStudent = await Student.findOne({ matricNumber });
@@ -145,6 +145,7 @@ const login = async (req, res) => {
           hobbies: student.hobbies,
           phoneNumber: student.phoneNumber,
           skills: student.skills,
+          forceLogout: student.forceLogout,
         };
 
     const responseData = {
@@ -161,8 +162,6 @@ const login = async (req, res) => {
     });
   }
 };
-
-
 
 const changePasswordAndSecurityQuestion = async (req, res) => {
   try {
@@ -326,25 +325,24 @@ const resetPassword = async (req, res) => {
 };
 
 const resetAllPasswords = async (req, res) => {
-  try {
-    const students = await Student.find();
-    students.forEach(async (student) => {
-      student.password = student.lastName;
-      student.securityAnswer = null;
-      student.securityQuestion = null;
-      student.firstLogin = true;
-      await student.save();
-    });
-
-    res
-      .status(StatusCodes.OK)
-      .json({ success: true, message: "All passwords reset successfully" });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: error.message });
-  }
+  // try {
+  //   const students = await Student.find();
+  //   students.forEach(async (student) => {
+  //     student.password = student.lastName;
+  //     student.securityAnswer = null;
+  //     student.securityQuestion = null;
+  //     student.firstLogin = true;
+  //     await student.save();
+  //   });
+  //   res
+  //     .status(StatusCodes.OK)
+  //     .json({ success: true, message: "All passwords reset successfully" });
+  // } catch (error) {
+  //   console.error(error);
+  //   res
+  //     .status(StatusCodes.INTERNAL_SERVER_ERROR)
+  //     .json({ error: error.message });
+  // }
 };
 
 const validToken = async (req, res) => {
@@ -384,45 +382,40 @@ const validToken = async (req, res) => {
 };
 
 const updateStudentProfiles = async (req, res) => {
-  try {
-    // Read profile.json file
-    const studentsProfile = require("../profile.json"); // Ensure the path is correct
-
-    let updatedCount = 0;
-    const updatedMatricNumbers = [];
-    const notUpdatedMatricNumbers = [];
-
-    for (const studentData of studentsProfile) {
-      const { matriculationNumber, ...updateFields } = studentData;
-
-      // Find the student by matric number and update their data
-      const result = await Student.findOneAndUpdate(
-        { matricNumber: matriculationNumber },
-        { $set: updateFields },
-        { new: true, runValidators: true }
-      );
-
-      if (result) {
-        updatedCount++;
-        updatedMatricNumbers.push(matriculationNumber);
-      } else {
-        notUpdatedMatricNumbers.push(matriculationNumber);
-      }
-    }
-
-    // Send the response
-    res.status(200).json({
-      message: `${updatedCount} student profiles updated successfully.`,
-      updatedMatricNumbers,
-      notUpdatedCount: notUpdatedMatricNumbers.length,
-      notUpdatedMatricNumbers,
-    });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "An error occurred while updating student profiles." });
-  }
+  // try {
+  //   // Read profile.json file
+  //   const studentsProfile = require("../profile.json"); // Ensure the path is correct
+  //   let updatedCount = 0;
+  //   const updatedMatricNumbers = [];
+  //   const notUpdatedMatricNumbers = [];
+  //   for (const studentData of studentsProfile) {
+  //     const { matriculationNumber, ...updateFields } = studentData;
+  //     // Find the student by matric number and update their data
+  //     const result = await Student.findOneAndUpdate(
+  //       { matricNumber: matriculationNumber },
+  //       { $set: updateFields },
+  //       { new: true, runValidators: true }
+  //     );
+  //     if (result) {
+  //       updatedCount++;
+  //       updatedMatricNumbers.push(matriculationNumber);
+  //     } else {
+  //       notUpdatedMatricNumbers.push(matriculationNumber);
+  //     }
+  //   }
+  //   // Send the response
+  //   res.status(200).json({
+  //     message: `${updatedCount} student profiles updated successfully.`,
+  //     updatedMatricNumbers,
+  //     notUpdatedCount: notUpdatedMatricNumbers.length,
+  //     notUpdatedMatricNumbers,
+  //   });
+  // } catch (error) {
+  //   console.error(error);
+  //   res
+  //     .status(500)
+  //     .json({ message: "An error occurred while updating student profiles." });
+  // }
 };
 
 // check if student should be logged out
@@ -436,9 +429,13 @@ const checkForceLogOut = async (req, res) => {
         .json({ success: false, error: "Student not found" });
     }
     if (student.forceLogout === false) {
-      return res.status(StatusCodes.OK).json({ success: true, forceLogout: false });
+      return res
+        .status(StatusCodes.OK)
+        .json({ success: true, forceLogout: false });
     } else {
-      return res.status(StatusCodes.OK).json({ success: true, forceLogout: true });
+      return res
+        .status(StatusCodes.OK)
+        .json({ success: true, forceLogout: true });
     }
   } catch (error) {
     console.error(error);
@@ -447,7 +444,6 @@ const checkForceLogOut = async (req, res) => {
       .json({ error: error.message });
   }
 };
-
 
 module.exports = {
   login,
@@ -459,5 +455,5 @@ module.exports = {
   resetAllPasswords,
   validToken,
   updateStudentProfiles,
-  checkForceLogOut,
+  checkForceLogOut
 };
