@@ -132,10 +132,26 @@ const StudentSchema = new mongoose.Schema({
 });
 
 StudentSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  if (this.securityAnswer) {
+  if (this.isModified("password")) {
+    console.log("Password is modified");
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+  if (this.isModified("securityAnswer")) {
+    const salt = await bcrypt.genSalt(10);
     this.securityAnswer = await bcrypt.hash(this.securityAnswer, salt);
+  }
+  next();
+});
+
+StudentSchema.pre("findOneAndUpdate", async function (next) {
+  if (this.getUpdate().password) {
+    const salt = await bcrypt.genSalt(10);
+    this.getUpdate().password = await bcrypt.hash(this.getUpdate().password, salt);
+  }
+  if (this.getUpdate().securityAnswer) {
+    const salt = await bcrypt.genSalt(10);
+    this.getUpdate().securityAnswer = await bcrypt.hash(this.getUpdate().securityAnswer, salt);
   }
   next();
 });
@@ -154,8 +170,6 @@ StudentSchema.methods.comparePassword = async function (password) {
   const isMatch = await bcrypt.compare(password, this.password);
   return isMatch;
 };
-
-
 
 StudentSchema.methods.compareSecurity = async function (securityAnswer) {
   const isMatch = await bcrypt.compare(securityAnswer, this.securityAnswer);

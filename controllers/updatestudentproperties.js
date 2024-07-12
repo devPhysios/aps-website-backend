@@ -1,6 +1,8 @@
 const Student = require("../models/Student");
 const fs = require("fs");
 const path = require("path");
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const updateAcademicCommitteeStatus = async (req, res) => {
   const { matricNumber } = req.body;
@@ -149,8 +151,80 @@ const updateStudentProfilesFromJson = async (req, res) => {
   // }
 };
 
+const promoteStudents = async (req, res) => {
+  // const session = await mongoose.startSession();
+  // session.startTransaction();
+  // try {
+  //   const removedStudents = await Student.deleteMany({ level: "500" }).session(session);
+  //   const levels = ["100", "200", "300", "400"];
+  //   const promotionDetails = {};
+
+  //   for (let i = levels.length - 1; i >= 0; i--) {
+  //     const currentLevel = levels[i];
+  //     const nextLevel = (parseInt(currentLevel) + 100).toString();
+
+  //     const { modifiedCount } = await Student.updateMany(
+  //       { level: currentLevel },
+  //       { $set: { level: nextLevel } },
+  //       { session }
+  //     );
+
+  //     promotionDetails[currentLevel] = modifiedCount;
+  //   }
+
+  //   await session.commitTransaction();
+  //   session.endSession();
+
+  //   const totalPromoted = Object.values(promotionDetails).reduce((sum, count) => sum + count, 0);
+
+  //   return res.status(200).json({
+  //     message: `${totalPromoted} students promoted successfully`,
+  //     promotions: promotionDetails,
+  //     removedStudents: removedStudents.deletedCount,
+  //   });
+  // } catch (error) {
+  //   await session.abortTransaction();
+  //   session.endSession();
+  //   console.error("Error promoting students:", error);
+  //   return res.status(500).json({ message: "Internal server error" });
+  // }
+};
+
+const resetPasswordsToLastName = async (req, res) => {
+  // const session = await mongoose.startSession();
+  // session.startTransaction();
+
+  // try {
+  //   const students = await Student.find({}).session(session);
+
+  //   for (const student of students) {
+  //     student.password = student.lastName.toLowerCase();
+  //     student.firstLogin = true;
+  //     await student.save({ session });
+  //     const updatedStudent = await Student.findById(student._id).session(session);
+  //     console.log(`Password for ${student.matricNumber} (${student.lastName}) reset and re-hashed value: ${updatedStudent.password}`);
+  //   }
+
+  //   await session.commitTransaction();
+  //   session.endSession();
+
+  //   return res.status(200).json({
+  //     message: "All student passwords have been reset to their last names.",
+  //   });
+  // } catch (error) {
+  //   await session.abortTransaction();
+  //   session.endSession();
+  //   console.error("Error resetting passwords:", error);
+  //   return res.status(500).json({ message: "Internal server error" });
+  // }
+};
+
+
+
 module.exports = {
   updateAcademicCommitteeStatus,
   updateMatricNumber,
   updateStudentProfilesFromJson,
+  promoteStudents,
+  resetPasswordsToLastName
 };
