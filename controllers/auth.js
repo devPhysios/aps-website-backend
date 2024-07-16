@@ -6,6 +6,7 @@ const capitalize = (word) => {
 };
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
 
 // const register = async (req, res) => {
 //   const student = await Student.create({ ...req.body });
@@ -36,23 +37,39 @@ const bcrypt = require("bcryptjs");
 // For populating the database with APS students
 
 const registerMultipleStudents = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    const studentsData = require("../populate100L.json");
+    const studentsData = require('../classes/2k26.json');
+
+    // Create or update students
     const createdStudents = await Promise.all(
       studentsData.map(async (studentData) => {
-        const student = await Student.create(studentData);
+        const student = await Student.findOneAndUpdate(
+          { matricNumber: studentData.matricNumber },
+          studentData,
+          { new: true, upsert: true, session }
+        );
         return { name: student.matricNumber };
       })
     );
+
+    await session.commitTransaction();
+    session.endSession();
+
     res.status(201).json({
       students: createdStudents,
       message: `${createdStudents.length} students created successfully!`,
     });
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 //delete all students of a particular level
 

@@ -7,19 +7,19 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter your first name"],
     trim: true,
-    match: [/^[A-Za-z-]*$/, "Please enter a valid first name"],
+    match: [/^[a-zA-Z0-9 '-]*$/, "Please enter a valid first name"],
   },
   lastName: {
     type: String,
     required: [true, "Please enter your last name"],
     trim: true,
-    match: [/^[A-Za-z-]*$/, "Please enter a valid last name"],
+    match: [/^[a-zA-Z0-9 '-]*$/, "Please enter a valid last name"],
   },
   middleName: {
     type: String,
     required: [false],
     trim: true,
-    match: [/^[A-Za-z-]*$/, "Please enter a valid middle name"],
+    match: [/^[a-zA-Z0-9 '-]*$/, "Please enter a valid middle name"],
   },
   email: {
     type: String,
