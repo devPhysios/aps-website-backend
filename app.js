@@ -22,7 +22,7 @@ app.use(cors());
 app.use(expressSanitizer());
 
 //connect to db
-const connectDB = require("./db/connnect");
+const connectDB = require("./db/connect");
 
 // routers
 const authRouter = require("./routes/auth");
