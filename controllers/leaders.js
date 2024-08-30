@@ -160,7 +160,7 @@ const updateExecutives = async (req, res) => {
     const executiveTitles = [
       "President", "Vice President", "General Secretary", "Assistant General Secretary",
       "Public Relations Officer", "Treasurer", "Financial Secretary", "Sports Secretary",
-      "Social Director", "Special Duties Officer"
+      "Social Secretary", "Special Duties Officer"
     ];
   
     const senatorTitles = [
