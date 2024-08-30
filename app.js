@@ -35,6 +35,7 @@ const updateRouter = require("./routes/updatestudentproperties");
 const questionsRouter = require("./routes/questions");
 const birthdayRouter = require("./routes/birthdays");
 const alumniRouter = require("./routes/alumnus");
+const leadersRouter = require("./routes/leaders")
 
 // routes
 app.use("/api/v1/auth", authRouter);
@@ -47,6 +48,7 @@ app.use("/api/v1/essayqs", essayqsRouter);
 app.use("/api/v1/questions", questionsRouter);
 app.use("/api/v1/birthdays", birthdayRouter);
 app.use("/api/v1/alumni", alumniRouter);
+app.use("/api/v1/leaders", leadersRouter)
 
 const port = process.env.PORT || 8800;
 

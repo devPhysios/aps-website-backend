@@ -76,10 +76,20 @@ const AlumnusSchema = new mongoose.Schema({
     default: null,
     required: [true, "Please enter your set"],
   },
-  postHeld: {
-    type: Array,
-    default: null,
-  },
+  postHeld: [
+    {
+      title: {
+        type: String,
+        required: [true, "Post title is required"],
+        trim: true,
+      },
+      academicSession: {
+        type: String,
+        required: [true, "Academic session is required"],
+        trim: true,
+      },
+    },
+  ],
   isPastExecutive: {
     type: Boolean,
     default: false,
@@ -110,8 +120,8 @@ const AlumnusSchema = new mongoose.Schema({
   },
   forceLogout: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 });
 
 AlumnusSchema.pre("save", async function (next) {
@@ -130,11 +140,17 @@ AlumnusSchema.pre("save", async function (next) {
 AlumnusSchema.pre("findOneAndUpdate", async function (next) {
   if (this.getUpdate().password) {
     const salt = await bcrypt.genSalt(10);
-    this.getUpdate().password = await bcrypt.hash(this.getUpdate().password, salt);
+    this.getUpdate().password = await bcrypt.hash(
+      this.getUpdate().password,
+      salt
+    );
   }
   if (this.getUpdate().securityAnswer) {
     const salt = await bcrypt.genSalt(10);
-    this.getUpdate().securityAnswer = await bcrypt.hash(this.getUpdate().securityAnswer, salt);
+    this.getUpdate().securityAnswer = await bcrypt.hash(
+      this.getUpdate().securityAnswer,
+      salt
+    );
   }
   next();
 });
@@ -159,6 +175,4 @@ AlumnusSchema.methods.compareSecurity = async function (securityAnswer) {
   return isMatch;
 };
 
-  
-  module.exports = mongoose.model("Alumnus", AlumnusSchema);
-  
+module.exports = mongoose.model("Alumnus", AlumnusSchema);
