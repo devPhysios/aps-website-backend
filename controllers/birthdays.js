@@ -231,10 +231,17 @@ const getStudentBirthdaysByMatricNumber = async (req, res) => {
 
 const getStudentBirthdaysByMatricNumberForEjs = async (req, res) => {
   try {
-    const { matricNumber } = req.params;
+    const { famn } = req.params;
 
-    // Find the birthday event matching the matric number
-    const birthday = await Birthday.findOne({ matricNumber });
+    // Split the parameter into firstName and lastThreeDigits
+    const firstName = famn.slice(0, -3).toLowerCase();
+    const lastThreeDigits = famn.slice(-3);
+
+    // Find the birthday event matching the firstName and last three digits of matric number
+    const birthday = await Birthday.findOne({
+      firstName: firstName,
+      matricNumber: { $regex: `${lastThreeDigits}$` }
+    });
 
     if (!birthday) {
       return null;
