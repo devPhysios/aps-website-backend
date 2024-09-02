@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday <%= birthday.fullName.split(' ')[0] %>!</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<%= birthday.imageUrl %>">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="<%= birthday.imageUrl %>">
+    
+    <!-- Microsoft Tile Color -->
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileImage" content="<%= birthday.imageUrl %>">
+    
+    <!-- Other meta tags -->
+    <meta name="description" content="Join us in celebrating <%= birthday.fullName %>'s birthday!">
+    <meta property="og:title" content="Happy Birthday <%= birthday.fullName.split(' ')[0] %>!">
+    <meta property="og:description" content="<%= birthday.birthdayWish %>">
+    <meta property="og:image" content="<%= birthday.imageUrl %>">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="http://localhost:3000/birthday/<%= birthday.matricNumber %>">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@600&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .font-nunito { font-family: 'Nunito', sans-serif; }
+        .font-jura { font-family: 'Jura', sans-serif; }
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
+    <div id="app" class="hidden">
+        <!-- Personalized Header -->
+        <div class="flex flex-col items-center py-8 relative z-10">
+            <img src="/images/aps-logo.png" alt="APS Logo" class="w-40 h-auto mb-6 animate-pulse" />
+            <h1 class="text-white text-5xl font-bold mt-4 text-center font-jura text-shadow animate-bounce">
+                <p>Happy Birthday, <span id="firstName" class="text-yellow-300"></span>!</p>
+            </h1>
+        </div>
+
+        <!-- Background Video -->
+        <div id="videoContainer" class="fixed top-0 left-0 w-full h-full overflow-hidden z-0">
+            <video id="backgroundVideo" class="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-50" autoplay loop muted></video>
+        </div>
+
+        <div class="relative z-10 container mx-auto px-4 py-12">
+            <!-- Birthday Card -->
+            <div class="flex flex-wrap justify-center">
+                <div class="w-full max-w-md backdrop-filter backdrop-blur-lg bg-white bg-opacity-10 rounded-xl p-8 card-shadow transition-all duration-300 hover:scale-105">
+                    <div class="relative w-full aspect-[3/4] mb-6">
+                        <img
+                            id="birthdayImage"
+                            alt="Birthday Image"
+                            class="rounded-lg object-cover w-full h-full shadow-lg"
+                        />
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h2 id="fullName" class="text-3xl font-bold font-poppins text-white text-shadow"></h2>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-white">
+                        <p id="birthdayDate" class="text-lg font-nunito"></p>
+                        <p id="classSet" class="text-lg font-nunito"></p>
+                        <p id="level" class="text-lg font-nunito"></p>
+                    </div>
+                    <div id="birthdayWish" class="mt-6 text-white italic font-poppins text-lg leading-relaxed"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading" class="flex justify-center items-center h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
+        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
+    </div>
+
+    <script>
+        // Birthday data passed from the server
+        const birthdayData = <%- JSON.stringify(birthday) %>;
+
+        // Configuration
+        const videoFiles = ['/videos/birthday-video-1.mp4', '/videos/birthday-video-2.mp4', '/videos/birthday-video-3.mp4'];
+        const musicFiles = ['/music/happy-birthday-1.mp3', '/music/happy-birthday-2.mp3', '/music/happy-birthday-3.mp3', '/music/happy-birthday-4.mp3'];
+
+        // Helper functions
+        function getFirstName(fullName) {
+            return fullName.split(' ')[0];
+        }
+
+        function formatBirthday(month, day) {
+            const date = new Date(`${month} ${day}, 2000`);
+            return date.toLocaleString('default', { month: 'long', day: 'numeric' });
+        }
+
+        function selectRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        // DOM manipulation
+        function updateDOM() {
+            document.getElementById('firstName').textContent = getFirstName(birthdayData.fullName);
+            document.getElementById('fullName').textContent = birthdayData.fullName;
+            document.getElementById('birthdayDate').textContent = `🎂 ${formatBirthday(birthdayData.birthdayMonth, birthdayData.birthdayDay)}`;
+            document.getElementById('classSet').textContent = `🏫 ${birthdayData.classSet}`;
+            document.getElementById('level').textContent = `🎓 ${birthdayData.level} Level`;
+            document.getElementById('birthdayWish').innerHTML = birthdayData.birthdayWish; // Using innerHTML for rich text
+
+            const birthdayImage = document.getElementById('birthdayImage');
+            birthdayImage.src = birthdayData.imageUrl;
+            birthdayImage.alt = `Birthday Image of ${birthdayData.fullName}`;
+        }
+
+        // Video and Audio setup
+        function setupMediaElements() {
+            const video = document.getElementById('backgroundVideo');
+            video.src = selectRandomItem(videoFiles);
+
+            const audio = new Audio(selectRandomItem(musicFiles));
+            
+            document.body.addEventListener('click', function playAudio() {
+                audio.play().catch(error => console.error("Audio playback failed:", error));
+                document.body.removeEventListener('click', playAudio);
+            }, { once: true });
+        }
+
+        // Animation
+        function addAnimations() {
+            const card = document.querySelector('.card-shadow');
+            card.classList.add('animate-fade-in-up');
+        }
+
+        // Main initialization
+        function init() {
+            updateDOM();
+            setupMediaElements();
+            addAnimations();
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+        }
+
+        // Run initialization when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

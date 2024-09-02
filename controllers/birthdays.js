@@ -229,6 +229,24 @@ const getStudentBirthdaysByMatricNumber = async (req, res) => {
   }
 };
 
+const getStudentBirthdaysByMatricNumberForEjs = async (req, res) => {
+  try {
+    const { matricNumber } = req.params;
+
+    // Find the birthday event matching the matric number
+    const birthday = await Birthday.findOne({ matricNumber });
+
+    if (!birthday) {
+      return null;
+    }
+
+    return birthday;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Internal Server Error");
+  }
+};
+
 const getBirthdaysByMonth = async (req, res) => {
   try {
     const { month } = req.params;
@@ -338,4 +356,5 @@ module.exports = {
   deleteStudentBirthday,
   getBirthdaysByMonth,
   getStudentBirthdaysByMatricNumber,
+  getStudentBirthdaysByMatricNumberForEjs
 };
