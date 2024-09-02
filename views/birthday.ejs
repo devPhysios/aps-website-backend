@@ -1,43 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday <%= birthday.fullName.split(' ')[0] %>!</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Happy Birthday <%= birthday.fullName.split(' ')[0] %>!</title>
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="<%= birthday.imageUrl %>">
+        
+        <!-- Apple Touch Icon -->
+        <link rel="apple-touch-icon" href="<%= birthday.imageUrl %>">
+        
+        <!-- Microsoft Tile Color -->
+        <meta name="msapplication-TileColor" content="#2b5797">
+        <meta name="msapplication-TileImage" content="<%= birthday.imageUrl %>">
+        
+        <!-- SEO and Open Graph meta tags -->
+        <meta name="description" content="Join us in celebrating <%= birthday.fullName %>'s birthday!">
+        <meta property="og:title" content="Happy Birthday <%= birthday.fullName.split(' ')[0] %>!">
+        <meta property="og:description" content="<%= birthday.birthdayWish %>">
+        <meta property="og:image" content="<%= birthday.imageUrl %>">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:type" content="profile">
+        <meta property="og:url" content="<%= new URL(`/birthday/${birthday.matricNumber}`, 'https://api.apsui.com').href %>">
+        <meta property="og:site_name" content="APS Birthday Celebrations">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="<%= birthday.imageUrl %>">
+        <!-- Twitter Card meta tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Happy Birthday <%= birthday.fullName.split(' ')[0] %>!">
+        <meta name="twitter:description" content="<%= birthday.birthdayWish %>">
+        <meta name="twitter:image" content="<%= birthday.imageUrl %>">
     
-    <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="<%= birthday.imageUrl %>">
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Microsoft Tile Color -->
-    <meta name="msapplication-TileColor" content="#2b5797">
-    <meta name="msapplication-TileImage" content="<%= birthday.imageUrl %>">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Jura:wght@600&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
-    <!-- Other meta tags -->
-    <meta name="description" content="Join us in celebrating <%= birthday.fullName %>'s birthday!">
-    <meta property="og:title" content="Happy Birthday <%= birthday.fullName.split(' ')[0] %>!">
-    <meta property="og:description" content="<%= birthday.birthdayWish %>">
-    <meta property="og:image" content="<%= birthday.imageUrl %>">
-    <meta property="og:type" content="profile">
-    <meta property="og:url" content="http://localhost:3000/birthday/<%= birthday.matricNumber %>">
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@600&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
-    <style>
-        .font-poppins { font-family: 'Poppins', sans-serif; }
-        .font-nunito { font-family: 'Nunito', sans-serif; }
-        .font-jura { font-family: 'Jura', sans-serif; }
-        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-    </style>
-</head>
+        <style>
+            .font-poppins { font-family: 'Poppins', sans-serif; }
+            .font-nunito { font-family: 'Nunito', sans-serif; }
+            .font-jura { font-family: 'Jura', sans-serif; }
+            .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+            .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        </style>
+    </head>
 <body class="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
     <div id="app" class="hidden">
         <!-- Personalized Header -->
@@ -116,6 +124,10 @@
             const birthdayImage = document.getElementById('birthdayImage');
             birthdayImage.src = birthdayData.imageUrl;
             birthdayImage.alt = `Birthday Image of ${birthdayData.fullName}`;
+            birthdayImage.onerror = function() {
+                this.onerror = null;
+                this.src = '/images/default-birthday-image.jpg'; // Provide a default image path
+            };
         }
 
         // Video and Audio setup
