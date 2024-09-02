@@ -207,43 +207,22 @@ const getStudentBirthdays = async (req, res) => {
   }
 };
 
-// get student birthdays by matric number using the req params
 const getStudentBirthdaysByMatricNumber = async (req, res) => {
   try {
     const { matricNumber } = req.params;
-    if (!matricNumber) {
-      return res
-        .status(400)
-        .json({ message: "Please provide a matric number" });
-    }
-    // Get current date
-    const today = new Date();
-    const currentMonth = today.getMonth() + 1;
-    const currentDay = today.getDate();
 
-    // Find birthdays matching the current date
-    const birthdays = await Birthday.find({
-      birthdayMonth: currentMonth.toString(),
-      birthdayDay: currentDay.toString(),
-    });
-    const student = await Student.findOne({ matricNumber }).select(
-      "firstName middleName lastName monthOfBirth dayOfBirth level"
-    );
-    if (!student) {
-      return res.status(404).json({ message: "Student not found" });
+    // Find the birthday event matching the matric number
+    const birthday = await Birthday.findOne({ matricNumber });
+
+    if (!birthday) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "No birthday event found for the specified matric number." });
     }
-    const birthdayStudent = {
-      fullName: `${capitalize(student.firstName)} ${capitalize(
-        student.middleName
-      )} ${capitalize(student.lastName)}`,
-      matricNumber,
-      monthOfBirth: student.monthOfBirth,
-      dayOfBirth: student.dayOfBirth,
-      level: student.level,
-    };
-    return res.status(200).json({ student: birthdayStudent });
+
+    return res.status(StatusCodes.OK).json({ birthday });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: "Internal Server Error" });
