@@ -7,7 +7,8 @@ const {
   getStudentBirthdays,
   getAllBirthdayEvents,
   deleteStudentBirthday,
-  getBirthdaysByMonth
+  getBirthdaysByMonth,
+  getStudentBirthdaysByMatricNumber
 } = require("../controllers/birthdays");
 const verifyToken = require("../middleware/authentication");
 // router.post('/register', register)
@@ -16,6 +17,7 @@ router.get("/student/:studentMatricNumber", verifyToken, getStudentDetails);
 router.get("/allevents", verifyToken, getAllBirthdayEvents);
 router.get("/birthdayevents", getStudentBirthdays);
 router.get("/bymonth/:month", getBirthdaysByMonth);
+router.get("/birthdayevents/:matricNumber")
 router.post("/create", verifyToken, createStudentBirthday);
 router.patch("/update", verifyToken, updateStudentBirthday);
 router.delete("/delete", verifyToken, deleteStudentBirthday);

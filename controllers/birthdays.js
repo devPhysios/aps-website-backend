@@ -207,14 +207,61 @@ const getStudentBirthdays = async (req, res) => {
   }
 };
 
+// get student birthdays by matric number using the req params
+const getStudentBirthdaysByMatricNumber = async (req, res) => {
+  try {
+    const { matricNumber } = req.params;
+    if (!matricNumber) {
+      return res
+        .status(400)
+        .json({ message: "Please provide a matric number" });
+    }
+    // Get current date
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const currentDay = today.getDate();
+
+    // Find birthdays matching the current date
+    const birthdays = await Birthday.find({
+      birthdayMonth: currentMonth.toString(),
+      birthdayDay: currentDay.toString(),
+    });
+    const student = await Student.findOne({ matricNumber }).select(
+      "firstName middleName lastName monthOfBirth dayOfBirth level"
+    );
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    const birthdayStudent = {
+      fullName: `${capitalize(student.firstName)} ${capitalize(
+        student.middleName
+      )} ${capitalize(student.lastName)}`,
+      matricNumber,
+      monthOfBirth: student.monthOfBirth,
+      dayOfBirth: student.dayOfBirth,
+      level: student.level,
+    };
+    return res.status(200).json({ student: birthdayStudent });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
+  }
+};
+
 const getBirthdaysByMonth = async (req, res) => {
   try {
     const { month } = req.params;
-    if (!month) { return res.status(400).json({ message: "Please provide a month" }); }
+    if (!month) {
+      return res.status(400).json({ message: "Please provide a month" });
+    }
     const capitalizedMonth = capitalize(month);
     const students = await Student.find({ monthOfBirth: capitalizedMonth });
     const birthdayStudents = students.map((student) => ({
-      fullName: `${capitalize(student.firstName)} ${capitalize(student.middleName)} ${capitalize(student.lastName)}`,
+      fullName: `${capitalize(student.firstName)} ${capitalize(
+        student.middleName
+      )} ${capitalize(student.lastName)}`,
       matricNumber: student.matricNumber,
       monthOfBirth: student.monthOfBirth,
       dayOfBirth: student.dayOfBirth,
@@ -226,14 +273,11 @@ const getBirthdaysByMonth = async (req, res) => {
       message: `${birthdayStudents.length} students found`,
       students: birthdayStudents,
     });
-
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while retrieving students' birthdays.",
-      });
+    res.status(500).json({
+      message: "An error occurred while retrieving students' birthdays.",
+    });
   }
 };
 
@@ -314,4 +358,5 @@ module.exports = {
   getAllBirthdayEvents,
   deleteStudentBirthday,
   getBirthdaysByMonth,
+  getStudentBirthdaysByMatricNumber,
 };
