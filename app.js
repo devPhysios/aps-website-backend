@@ -86,7 +86,7 @@ app.use("/api/v1/alumni", alumniRouter);
 app.use("/api/v1/leaders", leadersRouter);
 
 // Birthday route to render EJS template
-app.get("/birthdays/birthday/:matricNumber", async (req, res) => {
+app.get("/birthday/:matricNumber", async (req, res) => {
   try {
     const birthdayData = await getStudentBirthdaysByMatricNumberForEjs(
       req,
