@@ -94,6 +94,7 @@ app.get("/birthday/:matricNumber", async (req, res) => {
     );
     if (birthdayData) {
       res.render("birthday", { birthday: birthdayData });
+      res.status(200);
     } else {
       // Set a 404 status and render an error page with a redirect script
       res.status(404).render("error", {
