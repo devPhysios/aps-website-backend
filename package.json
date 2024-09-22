@@ -27,7 +27,6 @@
     "jwt-decode": "^4.0.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
-    "nodemon": "^3.0.3",
     "rate-limiter": "^0.2.0",
     "serve-favicon": "^2.5.0",
     "validator": "^13.11.0",
@@ -36,5 +35,8 @@
   },
   "overrides": {
     "whatwg-url": "^14.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }

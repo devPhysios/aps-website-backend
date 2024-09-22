@@ -1,86 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, <%= name %>!</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap');
-    </style>
-</head>
-<body class="bg-gradient-to-r from-purple-600 to-pink-600 min-h-screen flex items-center justify-center overflow-hidden font-['Roboto']">
-    <div id="particles-js" class="absolute inset-0"></div>
-    <div class="relative z-10 text-center p-8 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-3xl shadow-2xl">
-        <h1 class="text-7xl font-['Pacifico'] text-white mb-6 animate-bounce">Happy Birthday, <%= name %>!</h1>
-        <p class="text-2xl text-white mb-8">Wishing you an amazing day filled with joy and laughter!</p>
-        <div class="bg-white p-8 rounded-2xl shadow-lg mb-8">
-            <p class="text-2xl text-gray-800 mb-4">Your age: <span class="font-bold text-3xl text-purple-600"><%= age %></span></p>
-            <p class="text-2xl text-gray-800">Your birthday: <span class="font-bold text-3xl text-pink-600"><%= birthday %></span></p>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Happy Birthday <%= birthday.fullName.split(' ')[0] %>!</title>
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="<%= birthday.imageUrl %>">
+        
+        <!-- Apple Touch Icon -->
+        <link rel="apple-touch-icon" href="<%= birthday.imageUrl %>">
+        
+        <!-- Microsoft Tile Color -->
+        <meta name="msapplication-TileColor" content="#2b5797">
+        <meta name="msapplication-TileImage" content="<%= birthday.imageUrl %>">
+        
+        <!-- SEO and Open Graph meta tags -->
+        <meta name="description" content="Join us in celebrating <%= birthday.fullName %>'s birthday!">
+        <meta property="og:title" content="Happy Birthday <%= birthday.fullName.split(' ')[0] %>!">
+        <meta property="og:description" content="<%= birthday.birthdayWish.replace(/<[^>]*>/g, '') %>">
+        <meta property="og:image" content="<%= birthday.imageUrl %>">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:type" content="profile">
+        <meta property="og:url" content="<%= new URL(`/birthday/${birthday.fullName.split(' ')[0]}${birthday.matricNumber.slice(-3)}`, 'https://api.apsui.com').href %>">
+        <meta property="og:site_name" content="APS Birthday Celebrations">
+    
+        <!-- Twitter Card meta tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Happy Birthday <%= birthday.fullName.split(' ')[0] %>!">
+        <meta name="twitter:description" content="<%= birthday.birthdayWish.replace(/<[^>]*>/g, '') %>">
+        <meta name="twitter:image" content="<%= birthday.imageUrl %>">
+    
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+    
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Jura:wght@600&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    
+        <style>
+            .font-poppins { font-family: 'Poppins', sans-serif; }
+            .font-nunito { font-family: 'Nunito', sans-serif; }
+            .font-jura { font-family: 'Jura', sans-serif; }
+            .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+            .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+        </style>
+    </head>
+<body class="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
+    <div id="app" class="hidden">
+        <!-- Personalized Header -->
+        <div class="flex flex-col items-center py-8 relative z-10">
+            <img src="/images/aps-logo.png" alt="APS Logo" class="w-40 h-auto mb-6 animate-pulse" aria-label="APS Logo" />
+            <h1 class="text-white text-5xl font-bold mt-4 text-center font-jura text-shadow">
+                <span class="inline-block animate-float">Happy</span>
+                <span class="inline-block animate-float" style="animation-delay: 0.2s;">Birthday,</span>
+                <span id="firstName" class="inline-block text-yellow-300 animate-float" style="animation-delay: 0.4s;"></span>
+            </h1>
         </div>
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-white mb-4">Countdown to your next birthday:</h2>
-            <div id="countdown" class="text-4xl font-bold text-white"></div>
+
+        <!-- Background Video -->
+        <div id="videoContainer" class="fixed top-0 left-0 w-full h-full overflow-hidden z-0">
+            <div id="parallaxBackground" class="absolute top-0 left-0 w-full h-full" style="transform: translateZ(-1px) scale(2);"></div>
+            <video id="backgroundVideo" class="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-70" autoplay loop muted></video>
         </div>
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-white mb-4">Your personalized birthday message:</h2>
-            <p id="typedMessage" class="text-2xl text-white"></p>
+
+        <div class="relative z-10 container mx-auto px-4 py-12">
+            <!-- Birthday Card -->
+            <div class="flex flex-wrap justify-center">
+                <div class="w-full max-w-md backdrop-filter backdrop-blur-lg bg-white bg-opacity-10 rounded-xl p-8 card-shadow transition-all duration-300 hover:scale-105 animate-float">
+                    <div class="relative w-full aspect-[3/4] mb-6">
+                        <img
+                            id="birthdayImage"
+                            alt="Birthday Image"
+                            class="rounded-lg object-cover w-full h-full shadow-lg"
+                        />
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h2 id="fullName" class="text-3xl font-bold font-poppins text-white text-shadow"></h2>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-white">
+                        <p id="birthdayDate" class="text-lg font-nunito"></p>
+                        <p id="classSet" class="text-lg font-nunito"></p>
+                        <p id="level" class="text-lg font-nunito"></p>
+                    </div>
+                    <div class="mt-6">
+                        <button id="mysteryBox" class="w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                            Open Your Birthday Surprise! 🎁
+                        </button>
+                        <div id="birthdayWish" class="mt-4 text-white italic font-poppins text-lg leading-relaxed hidden"></div>
+                    </div>
+                    <div class="mt-6 space-y-4">
+                        <button id="shareButton" class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-300 transform hover:scale-105" aria-label="Share birthday wish">
+                            Share Birthday Wish 🎂
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button id="cakeButton" class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-4 px-8 rounded-full text-2xl transition duration-300 transform hover:scale-110">
-            🎂 Click for a surprise!
-        </button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="loading" class="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
+        <div class="w-16 h-16 border-4 border-blue-400 border-dashed rounded-full animate-spin mb-4"></div>
+        <p class="text-white text-xl font-bold">Preparing your celebration...</p>
+    </div>
+
     <script>
-        // Particle.js configuration for animated background
-        particlesJS("particles-js", {
-            particles: {
-                number: { value: 100 },
-                color: { value: "#ffffff" },
-                shape: { type: "circle" },
-                opacity: { value: 0.5, random: true },
-                size: { value: 3, random: true },
-                move: { enable: true, speed: 2 }
-            }
-        });
+        // Birthday data passed from the server
+        const birthdayData = <%- JSON.stringify(birthday) %>;
 
-        // Countdown timer
-        function updateCountdown() {
-            const now = new Date();
-            const nextBirthday = new Date("<%= birthday %>");
-            nextBirthday.setFullYear(now.getFullYear() + (now > nextBirthday ? 1 : 0));
-            const timeLeft = nextBirthday - now;
+        // Configuration
+        const videoFiles = ['/videos/birthday-video-1.mp4', '/videos/birthday-video-2.mp4', '/videos/birthday-video-3.mp4'];
+        const musicFiles = ['/music/happy-birthday-1.mp3', '/music/happy-birthday-2.mp3', '/music/happy-birthday-3.mp3', '/music/happy-birthday-4.mp3'];
 
-            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        // Helper functions
+        function getFirstName(fullName) {
+            return fullName.split(' ')[0];
         }
-        setInterval(updateCountdown, 1000);
 
-        // Typed effect for personalized message
-        const message = "On this special day, we celebrate you and all the joy you bring to our lives. May your year ahead be filled with endless possibilities, exciting adventures, and beautiful moments. You're amazing, <%= name %>!";
-        let i = 0;
-        function typeMessage() {
-            if (i < message.length) {
-                document.getElementById("typedMessage").innerHTML += message.charAt(i);
-                i++;
-                setTimeout(typeMessage, 50);
-            }
+        function formatBirthday(month, day) {
+            const date = new Date(`${month} ${day}, 2000`);
+            return date.toLocaleString('default', { month: 'long', day: 'numeric' });
         }
-        typeMessage();
 
-        // Surprise button effect
-        document.getElementById("cakeButton").addEventListener("click", function() {
-            gsap.to(this, {duration: 0.5, rotation: 360, scale: 1.2});
-            setTimeout(() => {
-                alert("🎉 Surprise! Here's a virtual cake just for you! 🎂\nMake a wish and enjoy your special day!");
-            }, 500);
-        });
+        function selectRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        // DOM manipulation
+        function updateDOM() {
+            document.getElementById('firstName').textContent = getFirstName(birthdayData.fullName);
+            document.getElementById('fullName').textContent = birthdayData.fullName;
+            document.getElementById('birthdayDate').textContent = `🎂 ${formatBirthday(birthdayData.birthdayMonth, birthdayData.birthdayDay)}`;
+            document.getElementById('classSet').textContent = `🏫 ${birthdayData.classSet}`;
+            document.getElementById('level').textContent = `🎓 ${birthdayData.level} Level`;
+
+            const birthdayImage = document.getElementById('birthdayImage');
+            birthdayImage.src = birthdayData.imageUrl;
+            birthdayImage.alt = `Birthday Image of ${birthdayData.fullName}`;
+            birthdayImage.onerror = function() {
+                this.onerror = null;
+                this.src = '/images/default-birthday-image.jpg'; // Provide a default image path
+            };
+        }
+
+        // Video and Audio setup
+        function setupMediaElements() {
+            const video = document.getElementById('backgroundVideo');
+            video.src = selectRandomItem(videoFiles);
+
+            const audio = new Audio(selectRandomItem(musicFiles));
+            
+            document.body.addEventListener('click', function playAudio() {
+                audio.play().catch(error => console.error("Audio playback failed:", error));
+                document.body.removeEventListener('click', playAudio);
+            }, { once: true });
+        }
+
+        // Parallax effect
+        function updateParallax() {
+            const parallax = document.getElementById('parallaxBackground');
+            window.addEventListener('scroll', () => {
+                let scrollPosition = window.pageYOffset;
+                parallax.style.transform = `translateY(${scrollPosition * 0.5}px)`;
+            });
+        }
+
+        // Main initialization
+        function init() {
+            updateDOM();
+            setupMediaElements();
+            updateParallax();
+            setupInteractiveElements();
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+        }
+
+        // Run initialization when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Setup interactive elements
+        function setupInteractiveElements() {
+            const mysteryBox = document.getElementById('mysteryBox');
+            const birthdayWish = document.getElementById('birthdayWish');
+
+            mysteryBox.addEventListener('click', () => {
+                mysteryBox.classList.add('hidden');
+                birthdayWish.classList.remove('hidden');
+                birthdayWish.innerHTML = birthdayData.birthdayWish;
+                
+                // Add a reveal animation
+                birthdayWish.style.opacity = '0';
+                birthdayWish.style.transform = 'translateY(20px)';
+                birthdayWish.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                
+                setTimeout(() => {
+                    birthdayWish.style.opacity = '1';
+                    birthdayWish.style.transform = 'translateY(0)';
+                }, 10);
+            });
+
+            const shareButton = document.getElementById('shareButton');
+            shareButton.addEventListener('click', () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: `Happy Birthday ${birthdayData.fullName}!`,
+                        text: birthdayData.birthdayWish,
+                        url: window.location.href
+                    }).then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+                } else {
+                    alert('Web Share API not supported in your browser');
+                }
+            });
+        }
     </script>
 </body>
 </html>
