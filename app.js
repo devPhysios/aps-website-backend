@@ -121,7 +121,7 @@ const keepServerActive = () => {
 };
 
 // Set up the interval (13 minutes = 13 * 60 * 1000 milliseconds)
-setInterval(keepServerActive, 13 * 60 * 1000);
+setInterval(keepServerActive, 9 * 60 * 1000);
 
 // Execute immediately for first run
 keepServerActive();
