@@ -115,6 +115,17 @@ app.get("/birthday/:famn", async (req, res) => {
 
 const port = process.env.PORT || 8800;
 
+// Keep-alive function that runs every 13 minutes
+const keepServerActive = () => {
+  console.log('Keep-alive ping:', new Date().toISOString());
+};
+
+// Set up the interval (13 minutes = 13 * 60 * 1000 milliseconds)
+setInterval(keepServerActive, 13 * 60 * 1000);
+
+// Execute immediately for first run
+keepServerActive();
+
 const startConnection = async () => {
   try {
     const isConnectionSuccessful = await connectDB(process.env.MONGO_URI);
