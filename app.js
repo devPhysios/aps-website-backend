@@ -66,6 +66,7 @@ const questionsRouter = require("./routes/questions");
 const birthdayRouter = require("./routes/birthdays");
 const alumniRouter = require("./routes/alumnus");
 const leadersRouter = require("./routes/leaders");
+const uptime = require("./routes/uptime")
 
 // Import the birthday controller
 const {
@@ -84,6 +85,7 @@ app.use("/api/v1/questions", questionsRouter);
 app.use("/api/v1/birthdays", birthdayRouter);
 app.use("/api/v1/alumni", alumniRouter);
 app.use("/api/v1/leaders", leadersRouter);
+app.use("/api/v1/uptime", uptime);
 
 // Birthday route to render EJS template
 app.get("/birthday/:famn", async (req, res) => {

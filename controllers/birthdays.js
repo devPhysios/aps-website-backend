@@ -8,7 +8,7 @@ const capitalize = (word) => {
 const getStudentDetails = async (req, res) => {
   try {
     const { matricNumber: authMatricNumber } = req.student;
-    console.log("220978");
+    console.log(authMatricNumber);
     const allowedMatricNumbers = ["213569", "220978"];
     if (!authMatricNumber || !allowedMatricNumbers.includes(authMatricNumber)) {
       return res
@@ -37,7 +37,6 @@ const getStudentDetails = async (req, res) => {
       classSet: student.classSet,
     };
     return res.status(StatusCodes.OK).json({ student: studentData });
-    console.log(studentData);
   } catch (error) {
     console.log(error);
     return res
