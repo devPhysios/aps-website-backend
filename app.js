@@ -66,7 +66,8 @@ const questionsRouter = require("./routes/questions");
 const birthdayRouter = require("./routes/birthdays");
 const alumniRouter = require("./routes/alumnus");
 const leadersRouter = require("./routes/leaders");
-const uptime = require("./routes/uptime")
+const uptime = require("./routes/uptime");
+const electionRouter = require("./routes/election");
 
 // Import the birthday controller
 const {
@@ -86,6 +87,7 @@ app.use("/api/v1/birthdays", birthdayRouter);
 app.use("/api/v1/alumni", alumniRouter);
 app.use("/api/v1/leaders", leadersRouter);
 app.use("/api/v1/uptime", uptime);
+app.use("/api/v1/election", electionRouter);
 
 // Birthday route to render EJS template
 app.get("/birthday/:famn", async (req, res) => {
@@ -102,7 +104,7 @@ app.get("/birthday/:famn", async (req, res) => {
       res.status(404).render("error", {
         message: "Birthday not found",
         redirectUrl: "https://www.apsui.com/birthdays", // Replace with your desired external URL
-        redirectDelay: 3000 // 3 seconds in milliseconds
+        redirectDelay: 3000, // 3 seconds in milliseconds
       });
     }
   } catch (error) {
@@ -110,7 +112,7 @@ app.get("/birthday/:famn", async (req, res) => {
     res.status(500).render("error", {
       message: "Error fetching birthday data",
       redirectUrl: "https://www.apsui.com/birthdays", // Replace with your desired external URL
-      redirectDelay: 3000 // 3 seconds in milliseconds
+      redirectDelay: 3000, // 3 seconds in milliseconds
     });
   }
 });
