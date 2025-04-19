@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const {UnauthenticatedError} = require('../errors/index.js')
 
 const authenticateStudent = async (req, res, next) => {
     //check header

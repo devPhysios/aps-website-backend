@@ -3,25 +3,50 @@ const Student = require("../models/Student");
 const { StatusCodes } = require("http-status-codes");
 
 const updateStudent = async (req, res) => {
-  const { matricNumber } = req.student
+  const { matricNumber } = req.student;
 
-  const { monthOfBirth, dayOfBirth, hobbies, email, gender, hallOfResidence, roomNo, profilePicture, phoneNumber, skills } = req.body
-
+  const {
+    monthOfBirth,
+    dayOfBirth,
+    hobbies,
+    email,
+    gender,
+    hallOfResidence,
+    roomNo,
+    profilePicture,
+    phoneNumber,
+    skills,
+  } = req.body;
   try {
     const studentToUpdate = await Student.findOne({ matricNumber });
 
     if (!studentToUpdate) {
-      return res.status(StatusCodes.NOT_FOUND).json({ error: "Student not found" });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Student not found" });
     }
 
     const student = await Student.findOneAndUpdate(
-      studentToUpdate,
-      { monthOfBirth, dayOfBirth, hobbies, email, gender, hallOfResidence, roomNo, profilePicture, skills, phoneNumber},
+      { matricNumber },
+      {
+        $set: {
+          monthOfBirth,
+          dayOfBirth,
+          hobbies,
+          email,
+          gender,
+          hallOfResidence,
+          roomNo,
+          profilePicture,
+          skills,
+          phoneNumber,
+        },
+      },
       { new: true }
     ).select("-password -securityQuestion -securityAnswer");
 
     res.status(StatusCodes.OK).json({
-      student
+      student,
     });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -39,7 +64,7 @@ const getStudentDetails = async (req, res) => {
       throw new UnauthenticatedError("Student not found");
     }
     res.status(StatusCodes.OK).json({
-      student
+      student,
     });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -49,5 +74,6 @@ const getStudentDetails = async (req, res) => {
 };
 
 module.exports = {
-    updateStudent, getStudentDetails
-}
+  updateStudent,
+  getStudentDetails,
+};

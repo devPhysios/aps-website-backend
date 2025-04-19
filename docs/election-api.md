@@ -5,7 +5,7 @@ This document provides information about the Election API endpoints available fo
 ## Base URL
 
 ```
-https://your-api-domain.com/api/v1/election
+https://aps-website-backend-haq4.onrender.com/api/v1/election
 ```
 
 ## Endpoints
@@ -81,7 +81,7 @@ Retrieves information for a specific student using their matric number.
 
 ```javascript
 const response = await fetch(
-  "https://your-api-domain.com/api/v1/election/students"
+  "https://aps-website-backend-haq4.onrender.com/api/v1/election/students"
 );
 const data = await response.json();
 ```
@@ -91,7 +91,7 @@ const data = await response.json();
 ```javascript
 const matricNumber = "123456";
 const response = await fetch(
-  `https://your-api-domain.com/api/v1/election/students/${matricNumber}`
+  `https://aps-website-backend-haq4.onrender.com/api/v1/election/students/${matricNumber}`
 );
 const data = await response.json();
 ```
