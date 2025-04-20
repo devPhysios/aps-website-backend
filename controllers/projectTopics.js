@@ -42,6 +42,93 @@ const isRicherData = (newData, existingData) => {
   return false;
 };
 
+// Helper function to properly format a name
+const formatName = (lastName, firstName, middleName) => {
+  // Convert lastName to uppercase
+  const formattedLastName = lastName.toUpperCase();
+
+  // Capitalize first letter of first name (handling hyphenated names)
+  const formattedFirstName = firstName
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join("-");
+
+  // Format the full name: LASTNAME, Firstname Middlename
+  let formattedName = `${formattedLastName}, ${formattedFirstName}`;
+
+  // Add middle name if it exists
+  if (middleName && middleName.trim()) {
+    // Capitalize first letter of middle name (handling hyphenated names)
+    const formattedMiddleName = middleName
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+      .join("-");
+
+    formattedName += ` ${formattedMiddleName}`;
+  }
+
+  return formattedName;
+};
+
+// Helper function to properly format a supervisor name
+const formatSupervisorName = (name) => {
+  if (!name || name === null) return null;
+
+  // Remove any excess whitespace
+  const trimmedName = name.trim().replace(/\s+/g, " ");
+
+  // Split the name into components
+  const parts = trimmedName.split(" ");
+
+  // Format based on naming pattern (assuming last component is always the surname)
+  if (parts.length === 1) {
+    // Only surname
+    return parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
+  } else if (parts.length === 2) {
+    // Could be: "Firstname Lastname" or "Initial Lastname"
+    if (
+      parts[0].length === 1 ||
+      (parts[0].length === 2 && parts[0].endsWith("."))
+    ) {
+      // Initial Lastname
+      const initial = parts[0].replace(".", "").toUpperCase() + ".";
+      const lastName =
+        parts[1].charAt(0).toUpperCase() + parts[1].slice(1).toLowerCase();
+      return `${initial} ${lastName}`;
+    } else {
+      // Firstname Lastname
+      const firstName = parts[0].charAt(0).toUpperCase() + ".";
+      const lastName =
+        parts[1].charAt(0).toUpperCase() + parts[1].slice(1).toLowerCase();
+      return `${firstName} ${lastName}`;
+    }
+  } else {
+    // Multiple parts: could be "Firstname Middlename Lastname" or "Firstname I. Lastname" or "I. J. Lastname"
+    let formattedName = "";
+
+    // Check if we have initials (parts ending with a dot or single letters)
+    for (let i = 0; i < parts.length - 1; i++) {
+      const part = parts[i];
+
+      if (part.length === 1 || (part.length === 2 && part.endsWith("."))) {
+        // Handle initial
+        formattedName += part.replace(".", "").toUpperCase() + ". ";
+      } else {
+        // Handle full name
+        formattedName += part.charAt(0).toUpperCase() + ". ";
+      }
+    }
+
+    // Add the last part (surname)
+    const lastName =
+      parts[parts.length - 1].charAt(0).toUpperCase() +
+      parts[parts.length - 1].slice(1).toLowerCase();
+    formattedName += lastName;
+
+    return formattedName;
+  }
+};
+
 // Create project topics in batch (for devs)
 const createBulkProjectTopics = async (req, res) => {
   const { topics } = req.body;
@@ -52,7 +139,7 @@ const createBulkProjectTopics = async (req, res) => {
     });
   }
 
-  // Validate each topic and set default supervisor to null if missing
+  // Validate each topic and format supervisor names
   for (const topic of topics) {
     const validation = validateProjectTopic(topic);
     if (!validation.isValid) {
@@ -60,9 +147,13 @@ const createBulkProjectTopics = async (req, res) => {
         error: validation.message,
       });
     }
-    // Set supervisor to null if not provided
+
+    // Set default supervisor if not provided
     if (!topic.supervisor) {
       topic.supervisor = { name: null, title: null };
+    } else if (topic.supervisor.name) {
+      // Format supervisor name if provided
+      topic.supervisor.name = formatSupervisorName(topic.supervisor.name);
     }
   }
 
@@ -162,14 +253,30 @@ const createProjectTopic = async (req, res) => {
     });
   }
 
+  // Format student name properly
+  const formattedName = formatName(
+    student.lastName,
+    student.firstName,
+    student.middleName
+  );
+
+  // Format supervisor name if provided
+  let formattedSupervisor = { name: null, title: null };
+  if (supervisor && supervisor.name) {
+    formattedSupervisor = {
+      name: formatSupervisorName(supervisor.name),
+      title: supervisor.title || null,
+    };
+  }
+
   const projectTopic = await ProjectTopic.create({
     author: {
-      name: `${student.firstName} ${student.lastName}`,
+      name: formattedName,
       matricNumber,
     },
     year,
     topic,
-    supervisor: supervisor || { name: null, title: null },
+    supervisor: formattedSupervisor,
   });
 
   res.status(StatusCodes.CREATED).json({ projectTopic });
@@ -222,7 +329,7 @@ const deleteProjectTopic = async (req, res) => {
     });
   }
 
-  await projectTopic.remove();
+  await projectTopic.deleteOne();
   res
     .status(StatusCodes.OK)
     .json({ msg: "Project topic deleted successfully" });
