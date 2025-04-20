@@ -70,65 +70,6 @@ const formatName = (lastName, firstName, middleName) => {
   return formattedName;
 };
 
-// Helper function to properly format a supervisor name
-const formatSupervisorName = (name) => {
-  if (!name || name === null) return null;
-
-  // Remove any excess whitespace
-  const trimmedName = name.trim().replace(/\s+/g, " ");
-
-  // Split the name into components
-  const parts = trimmedName.split(" ");
-
-  // Format based on naming pattern (assuming last component is always the surname)
-  if (parts.length === 1) {
-    // Only surname
-    return parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
-  } else if (parts.length === 2) {
-    // Could be: "Firstname Lastname" or "Initial Lastname"
-    if (
-      parts[0].length === 1 ||
-      (parts[0].length === 2 && parts[0].endsWith("."))
-    ) {
-      // Initial Lastname
-      const initial = parts[0].replace(".", "").toUpperCase() + ".";
-      const lastName =
-        parts[1].charAt(0).toUpperCase() + parts[1].slice(1).toLowerCase();
-      return `${initial} ${lastName}`;
-    } else {
-      // Firstname Lastname
-      const firstName = parts[0].charAt(0).toUpperCase() + ".";
-      const lastName =
-        parts[1].charAt(0).toUpperCase() + parts[1].slice(1).toLowerCase();
-      return `${firstName} ${lastName}`;
-    }
-  } else {
-    // Multiple parts: could be "Firstname Middlename Lastname" or "Firstname I. Lastname" or "I. J. Lastname"
-    let formattedName = "";
-
-    // Check if we have initials (parts ending with a dot or single letters)
-    for (let i = 0; i < parts.length - 1; i++) {
-      const part = parts[i];
-
-      if (part.length === 1 || (part.length === 2 && part.endsWith("."))) {
-        // Handle initial
-        formattedName += part.replace(".", "").toUpperCase() + ". ";
-      } else {
-        // Handle full name
-        formattedName += part.charAt(0).toUpperCase() + ". ";
-      }
-    }
-
-    // Add the last part (surname)
-    const lastName =
-      parts[parts.length - 1].charAt(0).toUpperCase() +
-      parts[parts.length - 1].slice(1).toLowerCase();
-    formattedName += lastName;
-
-    return formattedName;
-  }
-};
-
 // Create project topics in batch (for devs)
 const createBulkProjectTopics = async (req, res) => {
   const { topics } = req.body;
@@ -139,7 +80,7 @@ const createBulkProjectTopics = async (req, res) => {
     });
   }
 
-  // Validate each topic and format supervisor names
+  // Validate each topic
   for (const topic of topics) {
     const validation = validateProjectTopic(topic);
     if (!validation.isValid) {
@@ -151,9 +92,6 @@ const createBulkProjectTopics = async (req, res) => {
     // Set default supervisor if not provided
     if (!topic.supervisor) {
       topic.supervisor = { name: null, title: null };
-    } else if (topic.supervisor.name) {
-      // Format supervisor name if provided
-      topic.supervisor.name = formatSupervisorName(topic.supervisor.name);
     }
   }
 
@@ -260,15 +198,6 @@ const createProjectTopic = async (req, res) => {
     student.middleName
   );
 
-  // Format supervisor name if provided
-  let formattedSupervisor = { name: null, title: null };
-  if (supervisor && supervisor.name) {
-    formattedSupervisor = {
-      name: formatSupervisorName(supervisor.name),
-      title: supervisor.title || null,
-    };
-  }
-
   const projectTopic = await ProjectTopic.create({
     author: {
       name: formattedName,
@@ -276,7 +205,7 @@ const createProjectTopic = async (req, res) => {
     },
     year,
     topic,
-    supervisor: formattedSupervisor,
+    supervisor: supervisor || { name: null, title: null },
   });
 
   res.status(StatusCodes.CREATED).json({ projectTopic });
